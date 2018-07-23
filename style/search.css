@@ -1,0 +1,16 @@
+#searchButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    padding: 6px;
+}
+
+#searchBar {
+    border: 1px solid #DDDDDD;
+    outline: none;
+    padding: 6px;
+    font-size: 17px;
+}
+
+#searchContainer {}

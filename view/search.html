@@ -1,17 +1,42 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <link rel="stylesheet" href="../style/search.css">
 
-  <title>Music Recommender</title>
+<head>
+    <link rel="stylesheet" href="../style/search.css">
+
+    <title>Music Recommender</title>
+
+    <p id="title">Music Recommender</p>
 </head>
 
 <body>
 
     <div id="searchContainer">
-        <input id="searchBar" type="text" placeholder="Search.."/>
-        <button id="searchButton" type="submit">&#128270;</button>
+        <div class="bar-container">
+            <label for="artistSearch" class="search-label">Artist:</label>
+            <input id="artistSearch" class="search-bar" type="text" placeholder="Artist id.." />
+        </div>
+
+        <div class="bar-container">
+            <label for="songSearch" class="search-label">Song:</label>
+            <input id="songSearch" class="search-bar" type="text" placeholder="Song.." />
+        </div>
+
+        <div class="bar-container">
+            <label for="tagSearch" class="search-label">Tag:</label>
+            <input id="tagSearch" class="search-bar" type="text" placeholder="Tag.." />
+        </div>
+
+        <button id="searchButton" type="submit">Search</button>
+
+        <div class="bar-container">
+            <label for="userSearch" class="search-label">User:</label>
+            <input id="userSearch" class="search-bar" type="text" placeholder="User id.." />
+        </div>
+        <button id="userSearchButton" type="submit">Go</button>
+
+
     </div>
 
 </body>

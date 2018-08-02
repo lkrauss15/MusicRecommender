@@ -12,7 +12,7 @@ $(document).ready(function () {
         } else {
             var newTags = $(".tag-input").val();
 
-            $.post("http://localhost:4000/search", {
+            $.post("http://localhost:4000/tag", {
                 originalTags: originalTags.split(","),
                 newTags: newTags.split(",")
             },

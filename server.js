@@ -44,7 +44,7 @@ app.post('/search', function (req, res) {
 
   sname = req.body.songName;
 
-  connection.query("SELECT s.name, s.listeners, a.name, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = '" + sname + "' and s.createdBy = a.artistID;", function (error, results, fields) {
+  connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = '" + sname + "' and s.createdBy = a.artistID;", function (error, results, fields) {
     if (error) throw error;
     console.log(results);
     res.send(results);

@@ -1,0 +1,24 @@
+var express = require('express');
+var app = express();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// var mongoose = require('mongoose');
+// mongoose.connect(process.env.MONGODB_URI);
+
+// mongoose.Promise = Promise;
+
+app.post('/contact', function (req, res) {
+  console.log(req.body);
+  let name = req.body.name;
+  let email = req.body.email;
+  let subject = req.body.subject;
+  let message = req.body.message;
+  res.send({name, email, subject, message});
+});
+
+var port = process.env.PORT || 4000;
+app.listen(port, function () {
+  console.log('Express started, listening to port: ', port);
+});

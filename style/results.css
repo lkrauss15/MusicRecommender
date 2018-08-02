@@ -66,3 +66,18 @@
     padding-left: 10px;
 
 }
+
+.edit-tags-button {
+    margin-left: 5px;
+    background-color: #0e57cc;
+    border: none;
+    padding: 5px 6px;
+    color: white;
+    font-family: "Roboto medium", sans-serif;
+    border-radius: 5px;
+
+}
+
+.tag-input {
+    width: 80%;
+}

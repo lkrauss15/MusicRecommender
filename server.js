@@ -33,15 +33,24 @@ app.get('/search', function (req, res) {
   connection.query("SELECT s.name, s.listeners, a.name, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = 'Va Va Voom' and s.createdBy = a.artistID;", function (error, results, fields) {
     if (error) throw error;
     console.log(results);
+    res.send(results);
   });
   
-  res.send({resonse: "Response in this Object"});
+  //res.send({resonse: "Response in this Object"});
 });
 
 app.post('/search', function (req, res) {
   console.log(req.body);
+
+  sname = req.body.songName;
+
+  connection.query("SELECT s.name, s.listeners, a.name, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = '" + sname + "' and s.createdBy = a.artistID;", function (error, results, fields) {
+    if (error) throw error;
+    console.log(results);
+    res.send(results);
+  });
   
-  res.send({ field1: "Received Post", field2: "Example Response Object" });
+  //res.send({ field1: "Received Post", field2: "Example Response Object" });
 });
 
 /* Start Server */

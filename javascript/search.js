@@ -1,6 +1,14 @@
-$("#searchButton").click(function(){
-    alert("hello");
-    //$.post("localhost:4000/results.html", function(data, status){
-    //    alert("Data: " + data + "\nStatus: " + status);
-    //});
-})
+$(document).ready(function () {
+
+    $("#searchButton").click(function () {
+        $.post("localhost:4000/search", {
+                artistName: $("#artistSearch").val(),
+                songName: $("#songSearch").val(),
+                tag: $("#tagSearch").val()
+            },
+            function (data, status) {
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+    })
+
+});

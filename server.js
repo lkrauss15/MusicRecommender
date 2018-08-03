@@ -48,6 +48,17 @@ app.post('/search', function (req, res) {
   // all values
   if (artistName && songName && tag) {
 
+    connection.query("SELECT a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a "
+      + "WHERE s.createdBy = a.artistID and s.name = '" + songName + "' and a.name = '" + artistName + "' and a.artistID IN "
+      + "(SELECT a.artistID "
+      + "FROM music_recommender.artist a, artist_tag t"
+      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + "));",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
     // only artist and song -- no tag
   } else if (artistName && songName) {
 

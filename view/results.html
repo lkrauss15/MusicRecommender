@@ -4,7 +4,10 @@
 
 <head>
     <link rel="stylesheet" href="../style/results.css">
+    <link rel="stylesheet" href="../style/pagination.css">
+
     <script src="../javascript/jquery-3.3.1.js"></script>
+    <script src="../javascript/pagination.js"></script>
     <script src="../javascript/results.js"></script>
 
     <title>Search Results</title>
@@ -16,12 +19,11 @@
 
     <div id="resultsContainer">
 
-      <button type="button" id="testButton">TEST</button>
         <div id="pageContainer">
 
         </div>
         <p class="search-label">Artists:</p>
-        <!-- <a class="artist-result" href="http://www.last.fm/music/Michael+Jackson" target="_blank"> -->
+        <!-- <a class="artist-result" href="http://www.last.fm/music/Michael+Jackson" target="_blank">
         <div class="artist-result">
             <a href="http://www.last.fm/music/Michael+Jackson" class="artist-text" target="_blank">Michael Jackson</a>
 
@@ -32,19 +34,30 @@
             </div>
 
         </div>
+        -->
+
+        <div id="artistDataContainer"></div>
+        <div id="artistPages"></div>
 
         <p id="songLabel" class="search-label">Songs:</p>
+        <!--
         <div class="song-result">
 
             <span class="inner-text">Michael Jackson - Thriller</span>
             <span class="inner-text listens">1,013,359 listens</span>
 
         </div>
-        <!--
+
                 Michael Jackson Thriller 1,013,359 listens
                 http://www.last.fm/music/Michael+Jackson
                 http://userserve-ak.last.fm/serve/252/30501527.png
-            -->
+        -->
+
+        <div id="songDataContainer"></div>
+        <div id="songPages"></div>
+
+
+
 
     </div>
 

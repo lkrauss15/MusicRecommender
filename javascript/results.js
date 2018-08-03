@@ -14,13 +14,13 @@ $(document).ready(function () {
             var newTags = $(".tag-input").val();
 
             $.post("http://localhost:4000/tag", {
-                originalTags: originalTags.split(","),
-                newTags: newTags.split(",")
-            },
-            function (data, status) {
-                console.log(data);
-                console.log(status)
-            });
+                    originalTags: originalTags.split(","),
+                    newTags: newTags.split(",")
+                },
+                function (data, status) {
+                    console.log(data);
+                    console.log(status)
+                });
 
 
             var spanHTML = "<span class='tags'>" + newTags + "</span>"
@@ -30,62 +30,20 @@ $(document).ready(function () {
         }
     }
 
-    $(".edit-tags-button").click(onClickEditTags); //Needs to be called after all artists are created (page load and pagination)
-
-    function constructPage(num, isActive, isMax, isStart) {
-        var classes = "page-button "
-        if (isMax) {
-            classes += "max ";
-        }
-        if (isActive) {
-            classes += "active ";
-        }
-        if (isStart) {
-            classes += "start ";
-        }
-
-        return "<a href='#' class='" + classes + "'>" + num + "</a>";
-    }
-
-    function constructPagesHtml(start, activePage, numPages) {
-        if (numPages <= 5) {
-
-        }
-
-        var html =
-        "<div class='pages'>" +
-            "<a href='#' class='arrow left-arrow page-button'>&laquo;</a>" +
-            constructPage(start, start==activePage, false, true) +
-            constructPage(start+1, start+1==activePage, false, false) +
-            constructPage(start+2, start+2==activePage, false, false);
-
-        if (start >= numPages-4) {
-            html += constructPage(start+3, start+3==activePage, false, false) +
-                    constructPage(start+4, start+4==activePage, true, false) +
-                    "<a href='#' class='arrow disabled-arrow'>&raquo;</a>";
-        } else {
-            html += "<a href='#' class='dots'>&hellip;</a>" +
-                    constructPage(numPages, numPages==activePage, true, false) +
-                    "<a href='#' class='arrow right-arrow page-button'>&raquo;</a>";
-        }
-
-        html += "</div>";
-
-        return html;
-    }
+    //$(".edit-tags-button").click(onClickEditTags); //Needs to be called after all artists are created (page load and pagination)
 
     function constructArtistHTML(name, url, tags) {
         var html =
-        "<div class='artist-result'>" +
+            "<div class='artist-result'>" +
             "<a class='artist-text' href='" + url + "' target='_blank'>" + name + "</a>" +
 
             "<div class='artist-text'>" +
-                "<label>Tags: </label>" +
-                "<span class='tags'>" + tags + "</span>" +
-                "<button class='edit-tags-button'>Edit</button>" +
+            "<label>Tags: </label>" +
+            "<span class='tags'>" + tags + "</span>" +
+            "<button class='edit-tags-button'>Edit</button>" +
             "</div>" +
 
-        "</div>";
+            "</div>";
 
         return html;
     }
@@ -93,49 +51,80 @@ $(document).ready(function () {
 
     function constructSongHTML(name, artist, listens) {
         var html =
-        "<div class='song-result'>" +
+            "<div class='song-result'>" +
 
-            "<span class='inner-text'>" + artist +  "-" + name + "</span>" +
+            "<span class='inner-text'>" + artist + " - " + name + "</span>" +
             "<span class='inner-text listens'>" + listens + " listens</span>" +
 
-        "</div>";
+            "</div>";
 
         return html;
     }
 
-    $("#testButton").click(function() {
-        //$(this).after(constructArtistHTML("Name", "www.google.com", "tag1, tag2, tag3"));
-        //$(".edit-tags-button").click(onClickEditTags);
-
-        //$(this).after(constructSongHTML("Song Name", "Artist", "1,000,000"));
-
-         $("#pageContainer").append(constructPagesHtml(46, 47, 50));
-        $("#pageContainer").on("click", ".page-button", function() {
-            var page = $(this).text();
-            var newPage = 1;
-            if ($(this).hasClass("left-arrow")) {
-                var test = $(".pages > .active").text();
-                newPage = Number($(".pages > .active").text()) - 1;
-            } else if ($(this).hasClass("right-arrow")) {
-                newPage = Number($(".pages > .active").text()) + 1;
-            } else {
-                newPage = Number(page);
-            }
-
-            var maxPage = Number($(this).parent().find(".max").text());
-            var startPage = newPage - 1;
-            if (newPage == 1) {
-                startPage = 1;
-            }
-            if (newPage >= maxPage-4) {
-                startPage = Number($(this).parent().find(".start").text());
-            }
-
-            $(this).parent().replaceWith(constructPagesHtml(startPage, newPage, maxPage));
-
+    function artistTemplating(data) {
+        var html = '';
+        $.each(data, function (index, item) {
+            html += constructArtistHTML(item.name, item.url, item.tags);
         });
-    });
+        return html;
+    }
 
+    function getArtistData() {
+        var result = [];
+
+        //result.push({name: "Michael Jackson", url: "http://www.last.fm/music/Michael+Jackson", tags: "pop, 80s, michael jackson, soul, dance, funk"});
+        for (var i=1; i<=50; i++) {
+            result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
+        }
+
+        return result;
+    }
+
+
+
+    $('#artistPages').pagination({
+        dataSource: function (done) {
+            done(getArtistData());
+        },
+        callback: function (data, pagination) {
+            // template method of yourself
+            var html = artistTemplating(data);
+            $('#artistDataContainer').html(html);
+            $(".edit-tags-button").click(onClickEditTags);
+        }
+    })
+
+
+    function getSongData() {
+        var result = [];
+
+        //result.push({name: "Michael Jackson", url: "http://www.last.fm/music/Michael+Jackson", tags: "pop, 80s, michael jackson, soul, dance, funk"});
+        for (var i=1; i<=50; i++) {
+            result.push({name: "Song Name " + i, artist: "Artist " + i, listens: i * 1000});
+        }
+
+        return result;
+    }
+
+    function songTemplating(data) {
+        var html = '';
+        $.each(data, function (index, item) {
+            html += constructSongHTML(item.name, item.artist, item.listens);
+        });
+        return html;
+    }
+
+    $('#songPages').pagination({
+        dataSource: function (done) {
+            done(getSongData());
+        },
+        callback: function (data, pagination) {
+            // template method of yourself
+            var html = songTemplating(data);
+            $('#songDataContainer').html(html);
+            $(".edit-tags-button").click(onClickEditTags);
+        }
+    })
 
 
 

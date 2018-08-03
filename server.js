@@ -65,6 +65,17 @@ app.post('/search', function (req, res) {
     // only song and tag -- no artist
   } else if (songName && tag) {
 
+    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a "
+      + "WHERE s.name = '" + songName + "' and s.createdBy = a.artistID and a.artistID IN "
+      + "(SELECT a.artistID "
+      + "FROM music_recommender.artist a, artist_tag t"
+      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + "));",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
     // only artist
   } else if (artistName) {
 
@@ -90,9 +101,9 @@ app.post('/search', function (req, res) {
     // only tag
   } else if (tag) {
 
-    connection.query("SELECT DISTINCT s.name as sname, s.listeners, a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a, artist_tag t"
-      + " WHERE s.createdBy = a.artistID and a.artistID = t.artistID and " + genTagString(tag) + ";",
+    connection.query("SELECT a.name as aname, a.url "
+      + "FROM music_recommender.artist a, artist_tag t"
+      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + ");",
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -100,7 +111,7 @@ app.post('/search', function (req, res) {
 
     // nothing entered
   } else {
-
+    res.send({});
   }
 });
 
@@ -112,13 +123,10 @@ app.listen(port, function () {
 
 /* Helpers */
 const genTagString = (tag) => {
-  console.log('in gen, tag is: ');
-  console.log(tag);
   let str = "t.tagValue = '";
   tag.forEach((t) => {
     str = str.concat(t + "' OR t.tagValue = '");
   });
   str = str.slice(0, str.length - 18);
-  //console.log("str is: " + str);
   return str;
 }

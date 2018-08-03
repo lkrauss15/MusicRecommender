@@ -35,22 +35,73 @@ app.get('/search', function (req, res) {
     console.log(results);
     res.send(results);
   });
-  
+
   //res.send({resonse: "Response in this Object"});
 });
 
 app.post('/search', function (req, res) {
-  console.log(req.body);
 
-  sname = req.body.songName;
+  artistName = req.body.artistName;
+  songName = req.body.songName;
+  tag = req.body.tag && req.body.tag.split(',');
 
-  connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = '" + sname + "' and s.createdBy = a.artistID;", function (error, results, fields) {
-    if (error) throw error;
-    console.log(results);
-    res.send(results);
-  });
-  
-  //res.send({ field1: "Received Post", field2: "Example Response Object" });
+  // all values
+  if (artistName && songName && tag) {
+
+    // only artist and song -- no tag
+  } else if (artistName && songName) {
+
+    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a "
+      + "WHERE s.name = '" + songName + "' and a.name = '" + artistName + "' and s.createdBy = a.artistID;",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
+    // only artist and tag -- no song
+  } else if (artistName && tag) {
+
+    // only song and tag -- no artist
+  } else if (songName && tag) {
+
+    // only artist
+  } else if (artistName) {
+
+    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a "
+      + "WHERE a.name = '" + artistName + "' and s.createdBy = a.artistID;",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
+    // only song
+  } else if (songName) {
+
+    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a "
+      + "WHERE s.name = '" + songName + "' and s.createdBy = a.artistID;",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
+    // only tag
+  } else if (tag) {
+
+    connection.query("SELECT DISTINCT s.name as sname, s.listeners, a.name as aname, a.url "
+      + "FROM music_recommender.song s, music_recommender.artist a, artist_tag t"
+      + " WHERE s.createdBy = a.artistID and a.artistID = t.artistID and " + genTagString(tag) + ";",
+      function (error, results, fields) {
+        if (error) throw error;
+        res.send(results);
+      });
+
+    // nothing entered
+  } else {
+
+  }
 });
 
 /* Start Server */
@@ -58,3 +109,16 @@ var port = process.env.PORT || 4000;
 app.listen(port, function () {
   console.log('Express started, listening to port: ', port);
 });
+
+/* Helpers */
+const genTagString = (tag) => {
+  console.log('in gen, tag is: ');
+  console.log(tag);
+  let str = "t.tagValue = '";
+  tag.forEach((t) => {
+    str = str.concat(t + "' OR t.tagValue = '");
+  });
+  str = str.slice(0, str.length - 18);
+  //console.log("str is: " + str);
+  return str;
+}

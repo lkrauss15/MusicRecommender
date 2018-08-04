@@ -2,6 +2,19 @@ $(document).ready(function () {
 
     var originalTags;
     var editingTags = false;
+    var hidden = true;
+
+    $("#showRec").click(function() {
+        $("#hiddenRecs").slideToggle(300);
+        if (!hidden) {
+            $("#showRec").text("Show recommended artists \u25B6");
+            hidden = true;
+        } else {
+            $("#showRec").text("Show recommended artists \u25BC");
+            $("#hiddenRecs").css("display", "flex");
+            hidden = false;
+        }
+    });
 
     function onClickEditTags() {
         if (!editingTags) {
@@ -188,7 +201,6 @@ $(document).ready(function () {
         return result;
     }
 
-
     $('#artistRecPages').pagination({
         dataSource: function (done) {
             done(getArtistRecData());
@@ -200,5 +212,6 @@ $(document).ready(function () {
             $(".edit-tags-button").click(onClickEditTags);
         }
     })
+
 
 })

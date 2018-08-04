@@ -8,6 +8,7 @@ $(document).ready(function () {
                 tag: $("#tagSearch").val()
             },
             function (data, status) {
+                $("body").html(data);
                 console.log(data);
                 console.log(status);
             });

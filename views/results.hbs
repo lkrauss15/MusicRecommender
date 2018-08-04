@@ -1,0 +1,107 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.1/jquery.twbsPagination.min.js"></script>
+    <link rel="stylesheet" href="../../../style/results.css">
+    <link rel="stylesheet" href="../../../style/pagination.css">
+
+    <script src="../../../javascript/jquery-3.3.1.js"></script>
+    <script src="../../../javascript/pagination.js"></script>
+    <script src="../../../javascript/results.js"></script>
+
+    <title>Search Results</title>
+    <p id="title">Results</p>
+    <hr width="75%" id="sep" />
+</head>
+
+<body>
+
+    <div id="resultsContainer">
+
+        <div id="pageContainer">
+
+        </div>
+        <p class="search-label">Artists:</p>
+        <!-- <a class="artist-result" href="http://www.last.fm/music/Michael+Jackson" target="_blank">
+        <div class="artist-result">
+            <a href="http://www.last.fm/music/Michael+Jackson" class="artist-text" target="_blank">Michael Jackson</a>
+
+            <div class="artist-text">
+                <label>Tags:</label>
+                <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span>
+                <button class="edit-tags-button">Edit</button>
+            </div>
+
+        </div>
+        -->
+
+        <div id="artistDataContainer"></div>
+        <div id="artistPages"></div>
+
+        <p id="songLabel" class="search-label">Songs:</p>
+        <!--
+        <div class="song-result">
+
+            <span class="inner-text">Michael Jackson - Thriller</span>
+            <span class="inner-text listens">1,013,359 listens</span>
+
+        </div>
+
+                Michael Jackson Thriller 1,013,359 listens
+                http://www.last.fm/music/Michael+Jackson
+                http://userserve-ak.last.fm/serve/252/30501527.png
+        -->
+
+        {{!-- {{#each songs}}
+        <div class="song-result">
+
+            <span class="inner-text" href="{{url}}">{{aname}} - {{sname}}</span>
+            <span class="inner-text listens">{{listeners}} listens</span>
+
+        </div>
+        {{/each}} --}}
+
+        <div id="songDataContainer"></div>
+        <div id="songPages"></div>
+
+
+
+
+    </div>
+
+
+
+
+
+    <div style="display: none;" id="songsInDOM">
+        {{#each songs}}
+        <div id="song{{@index}}" class="songItem">
+            <div class="card">
+                <div class="card-header">{{aname}}</div>
+                <div class="card-block">
+                    <div class="song-result">
+
+                        <span class="inner-text">{{aname}} - {{sname}}</span>
+                        <span class="inner-text listens">{{listeners}} listens</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div id="songdetails"></div>
+    <br/>
+    <ul id="song-pagination" class="pagination-sm"></ul>
+    </div>
+    </script>
+    <br/>
+    <div id="resultPlaceholder">
+    </div>
+
+</body>
+
+</html>

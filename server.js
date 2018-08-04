@@ -59,8 +59,17 @@ app.get('/search', function (req, res) {
 });
 
 app.post('/tag', function(req, res) {
-    var originalTags = req.body.originalTags;
-    var newTags = req.body.newTags;
+    var tagsToAdd = req.body.tagsToAdd;
+    var tagsToRemove = req.body.tagsToRemove;
+    var tagsToAddWithID = req.body.tagsToAddWithID;
+    var tagsToRemoveWithID = req.body.tagsToRemoveWithID;
+
+    //connection.query(addTag(tagsToAdd, tagsToAddWithID) + removeTag(tagsToRemove, tagsToRemoveWithID),
+    //  function (error, results, fields) {
+    //    if (error) throw error;
+    //    res.send(results); //No results, nothing to render
+    // });
+
 });
 
 app.post('/search', function (req, res) {

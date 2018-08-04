@@ -6,7 +6,8 @@ $(document).ready(function () {
     function onClickEditTags() {
         if (!editingTags) {
             originalTags = $(this).prev().text();
-            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>"
+            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>" +
+            "<input class='id-input' placeholder='User id...' type='text'>";
             $(this).prev().replaceWith(inputHTML);
             $(this).text("Done");
             editingTags = true;
@@ -14,28 +15,44 @@ $(document).ready(function () {
             debugger;
             var newTags = $(".tag-input").val();
             if (newTags.trim() !== originalTags.trim()) {
+                var artistID = $(this).data("artist-id");
+                var userID = $(this).prev().val().trim();
+                if (userID === '') {
+                    userID = '1';
+                }
                 var newTagsSplit = newTags.split(",");
                 var originalTagsSplit = originalTags.split(",");
 
-                var tagsToAdd = [];
-                var tagsToRemove = [];
+                var tagsToAdd = "";
+                var tagsToRemove = "";
+
+                var tagsToAddWithID = "";
+                var tagsToRemoveWithID = "";
 
                 newTagsSplit.forEach(function (element) {
                     if (!originalTagsSplit.includes(element)) {
-                        tagsToAdd.push(element);
+                        tagsToAdd += "(" +artistID + "," + element.trim() + "),";
+                        tagsToAddWithID += "(" +artistID + "," + userID + "," + element.trim() + "," + new Date().toISOString().substring(0, 10) + "),";
                     }
                 });
 
                 originalTagsSplit.forEach(function (element) {
                     if (!newTagsSplit.includes(element)) {
-                        tagsToRemove.push(element);
+                        tagsToRemove += "(" +artistID + "," + element.trim() + "),";
+                        tagsToRemoveWithID += "(" +artistID + "," + userID + "," + element.trim() + "),";
                     }
                 });
 
+                tagsToAdd = tagsToAdd.slice(0, -1);
+                tagsToRemove = tagsToRemove.slice(0, -1);
+                tagsToAddWithID = tagsToAddWithID.slice(0, -1);
+                tagsToRemoveWithID = tagsToRemoveWithID.slice(0, -1);
 
                 $.post("http://localhost:4000/tag", {
-                        originalTags: originalTags.split(","),
-                        newTags: newTags.split(",")
+                        tagsToAdd: tagsToAdd,
+                        tagsToRemove: tagsToRemove,
+                        tagsToAddWithID: tagsToAdd,
+                        tagsToRemoveWithID: tagsToRemove
                     },
                     function (data, status) {
                         console.log(data);
@@ -44,7 +61,9 @@ $(document).ready(function () {
             }
 
             var spanHTML = "<span class='tags'>" + newTags + "</span>"
+            $(this).prev().remove();
             $(".tag-input").replaceWith(spanHTML);
+
             $(this).text("Edit");
             editingTags = false;
         }

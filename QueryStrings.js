@@ -31,6 +31,18 @@ const querySongTag = (songName, tag) => (
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
+const addTag = (artistTagPairs, artistTagPairsWithID) = (
+    `insert into artist_tag (artistID, tagValue) values ${artistTagPairs};
+     insert into tagged (artistID, userID, tagValue, date) values ${artistTagPairsWithID};
+    `
+);
+
+const removeTag = (artistTagPairs, artistTagPairsWithID) = (
+    `delete from artist_tag where (artistID, tagValue) in (${artistTagPairs});
+     delete from artist_tag where (artistID, userID, tagValue) in (${artistTagPairsWithID});
+    `
+);
+
 const queryArtist = (artistName) => (
 	/*
 `SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
@@ -38,17 +50,17 @@ FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
 	*/
 
-	`select art.name, art.url, sub.tags from artist as art join
-(
-SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
-FROM (
-	SELECT t.artistID as artistID, t.tagValue as b
-	FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
-	WHERE a.name = '${artistName}'
+	`select art.artistID, art.name, art.url, sub.tags from artist as art join
+    (
+    SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b
+        FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+        WHERE a.name = '${artistName}'
 
-) as filtered
-GROUP BY filtered.artistID )
-as sub on  art.artistID = sub.artistID;`
+    ) as filtered
+    GROUP BY filtered.artistID )
+    as sub on  art.artistID = sub.artistID;`
 );
 
 const querySong = (songName) => (
@@ -70,19 +82,19 @@ FROM music_recommender.artist a, music_recommender.artist_tag t
 WHERE a.artistID = t.artistID and (${genTagString(tag)});`
 */
 	`select art.name, art.url, sub.tags from artist as art join
-(
-SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
-FROM (
-	SELECT t.artistID as artistID, t.tagValue as b
-	FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
-	WHERE a.artistID in (
-		Select a.artistID
-		From artist a, Tag t, artist_tag y
-		Where t.tagValue in ('${tag}') and t.tagValue = y.tagValue and a.artistID = y.artistID
-    )
-) as filtered
-GROUP BY filtered.artistID )
-as sub on  art.artistID = sub.artistID;`
+    (
+    SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b
+        FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+        WHERE a.artistID in (
+            Select a.artistID
+            From artist a, Tag t, artist_tag y
+            Where t.tagValue in ('${tag}') and t.tagValue = y.tagValue and a.artistID = y.artistID
+        )
+    ) as filtered
+    GROUP BY filtered.artistID )
+    as sub on  art.artistID = sub.artistID;`
 );
 
 const genTagString = (tag) => {

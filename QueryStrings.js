@@ -31,13 +31,13 @@ const querySongTag = (songName, tag) => (
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
-const addTag = (artistTagPairs, artistTagPairsWithID) = (
+const addTag = (artistTagPairs, artistTagPairsWithID) => (
     `insert into artist_tag (artistID, tagValue) values ${artistTagPairs};
      insert into tagged (artistID, userID, tagValue, date) values ${artistTagPairsWithID};
     `
 );
 
-const removeTag = (artistTagPairs, artistTagPairsWithID) = (
+const removeTag = (artistTagPairs, artistTagPairsWithID) => (
     `delete from artist_tag where (artistID, tagValue) in (${artistTagPairs});
      delete from artist_tag where (artistID, userID, tagValue) in (${artistTagPairsWithID});
     `

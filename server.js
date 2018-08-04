@@ -63,6 +63,7 @@ app.post('/tag', function(req, res) {
     var tagsToRemove = req.body.tagsToRemove;
     var tagsToAddWithID = req.body.tagsToAddWithID;
     var tagsToRemoveWithID = req.body.tagsToRemoveWithID;
+    console.log(tagsToAdd, tagsToRemove, tagsToAddWithID, tagsToRemoveWithID);
 
     //connection.query(addTag(tagsToAdd, tagsToAddWithID) + removeTag(tagsToRemove, tagsToRemoveWithID),
     //  function (error, results, fields) {

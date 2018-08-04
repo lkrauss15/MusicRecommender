@@ -51,8 +51,8 @@ $(document).ready(function () {
                 $.post("http://localhost:4000/tag", {
                         tagsToAdd: tagsToAdd,
                         tagsToRemove: tagsToRemove,
-                        tagsToAddWithID: tagsToAdd,
-                        tagsToRemoveWithID: tagsToRemove
+                        tagsToAddWithID: tagsToAddWithID,
+                        tagsToRemoveWithID: tagsToRemoveWithID
                     },
                     function (data, status) {
                         console.log(data);

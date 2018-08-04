@@ -76,7 +76,7 @@ $(document).ready(function () {
 
     function constructFriendHTML(friendID) {
         var html =
-            "<div class='tag-result'>" +
+            "<div class='friend-result'>" +
 
             "<span class='inner-text'>Friend ID: " + friendID + "</span>" +
             "</div>";
@@ -89,7 +89,8 @@ $(document).ready(function () {
     function artistTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            html += constructArtistHTML(item.name, item.url, item.tags);
+            //html += constructArtistHTML(item.name, item.url, item.tags);
+            html += item;
         });
         return html;
     }
@@ -97,9 +98,12 @@ $(document).ready(function () {
     function getArtistData() {
         var result = [];
 
-        for (var i=1; i<=50; i++) {
-            result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        }
+        //for (var i=1; i<=50; i++) {
+        //   result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
+        //}
+        $(".artist-block").each(function (index, item) {
+            result.push($(item).html());
+        });
 
         return result;
     }
@@ -122,9 +126,12 @@ $(document).ready(function () {
     function getTagData() {
         var result = [];
 
-        for (var i=1; i<=50; i++) {
-            result.push({artist: "Artist " + i, tag: "Tag " + i, date: new Date().toLocaleDateString()});
-        }
+        //for (var i=1; i<=50; i++) {
+        //    result.push({artist: "Artist " + i, tag: "Tag " + i, date: new Date().toLocaleDateString()});
+        //}
+        $(".tag-block").each(function (index, item) {
+            result.push($(item).html());
+        });
 
         return result;
     }
@@ -132,7 +139,8 @@ $(document).ready(function () {
     function tagTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            html += constructTagHTML(item.artist, item.tag, item.date);
+            //html += constructTagHTML(item.artist, item.tag, item.date);
+            html += item;
         });
         return html;
     }
@@ -151,12 +159,15 @@ $(document).ready(function () {
 
     /* Friend Generation */
 
-        function getFriendData() {
+    function getFriendData() {
         var result = [];
 
-        for (var i=1; i<=50; i++) {
-            result.push({friendID: i});
-        }
+        //for (var i=1; i<=50; i++) {
+        //    result.push({friendID: i});
+        //}
+        $(".friend-block").each(function (index, item) {
+            result.push($(item).html());
+        });
 
         return result;
     }
@@ -164,7 +175,8 @@ $(document).ready(function () {
     function friendTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            html += constructFriendHTML(item.friendID);
+            //html += constructFriendHTML(item.friendID);
+            html += item;
         });
         return html;
     }
@@ -186,7 +198,8 @@ $(document).ready(function () {
         function artistRecTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            html += constructArtistHTML(item.name, item.url, item.tags);
+            //html += constructArtistHTML(item.name, item.url, item.tags);
+            html += item;
         });
         return html;
     }
@@ -194,9 +207,12 @@ $(document).ready(function () {
     function getArtistRecData() {
         var result = [];
 
-        for (var i=1; i<=50; i++) {
-            result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        }
+        //for (var i=1; i<=50; i++) {
+        //    result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
+        //}
+        $(".artist-rec-block").each(function (index, item) {
+            result.push($(item).html());
+        });
 
         return result;
     }

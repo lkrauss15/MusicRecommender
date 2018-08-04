@@ -25,7 +25,7 @@
     margin-bottom: 10px;
 }
 
-.tag-result {
+.tag-result, .friend-result{
     height: 2em;
     width: 30%;
     border: 1px solid gray;

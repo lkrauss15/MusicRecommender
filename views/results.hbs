@@ -40,18 +40,7 @@
 
 
         <div id="artistDataContainer">
-            {{#each artists}}
-            <div id="artist{{artistID}}" class="artist-result">
-                <a href="{{url}}" class="artist-text">{{aname}}</a>
 
-                <div class="artist-text">
-                    <label>Tags:</label>
-                    <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span>
-                    <button class="edit-tags-button">Edit</button>
-                </div>
-
-            </div>
-            {{/each}}
         </div>
         <div id="artistPages"></div>
 
@@ -110,13 +99,13 @@
 
     <div style="display: none;" id="artistsInDOM">
         {{#each artists}}
-        <div id="artist{{@index}}" class="artistItem">
+        <div id="artist{{artistID}}" class="artistItem">
             <div class="card">
                 <div class="card-header">{{aname}}</div>
                 <div class="card-block artist-block">
                     <div class="artist-result">
 
-                        <a href="{{url}}" class="artist-text" target="_blank">{{name}}</a>
+                        <a href="{{url}}" class="artist-text" target="_blank">{{aname}}</a>
 
                         <div class="artist-text">
                             <label>Tags:</label>

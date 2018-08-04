@@ -64,7 +64,8 @@ $(document).ready(function () {
     function artistTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            html += constructArtistHTML(item.name, item.url, item.tags);
+            //html += constructArtistHTML(item.name, item.url, item.tags);
+            html += item;
         });
         return html;
     }
@@ -73,9 +74,13 @@ $(document).ready(function () {
         var result = [];
 
         //result.push({name: "Michael Jackson", url: "http://www.last.fm/music/Michael+Jackson", tags: "pop, 80s, michael jackson, soul, dance, funk"});
-        for (var i=1; i<=50; i++) {
-            result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        }
+        //for (var i=1; i<=50; i++) {
+        //    result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
+        //}
+
+        $(".artist-block").each(function (index, item) {
+            result.push($(item).html());
+        });
 
         return result;
     }
@@ -102,7 +107,7 @@ $(document).ready(function () {
         //for (var i=1; i<=50; i++) {
         //    result.push({name: "Song Name " + i, artist: "Artist " + i, listens: i * 1000});
         //}
-        $(".card-block").each(function (index, item) {
+        $(".song-block").each(function (index, item) {
             result.push($(item).html());
         });
 

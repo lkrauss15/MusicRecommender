@@ -3,7 +3,7 @@ const queryArtistSongTag = (artistName, songName, tag) => (
 	FROM music_recommender.song s, music_recommender.artist a
 	WHERE s.createdBy = a.artistID and s.name = '${songName}' and a.name = '${artistName}' and a.artistID IN
 	(SELECT a.artistID
-		FROM music_recommender.artist a, music.recommender.artist_tag t
+		FROM music_recommender.artist a, music_recommender.artist_tag t
 		WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 

@@ -1,3 +1,5 @@
+var qs = require('./QueryStrings.js');
+
 /* Initial Setup */
 var express = require('express');
 var app = express();
@@ -64,12 +66,7 @@ app.post('/search', function (req, res) {
   // all values
   if (artistName && songName && tag) {
 
-    connection.query("SELECT a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a "
-      + "WHERE s.createdBy = a.artistID and s.name = '" + songName + "' and a.name = '" + artistName + "' and a.artistID IN "
-      + "(SELECT a.artistID "
-      + "FROM music_recommender.artist a, artist_tag t"
-      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + "));",
+    connection.query(qs.queryArtistSongTag(artistName, songName, tag),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -78,9 +75,7 @@ app.post('/search', function (req, res) {
     // only artist and song -- no tag
   } else if (artistName && songName) {
 
-    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a "
-      + "WHERE s.name = '" + songName + "' and a.name = '" + artistName + "' and s.createdBy = a.artistID;",
+    connection.query(qs.queryArtistSong(artistName, songName),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -89,12 +84,7 @@ app.post('/search', function (req, res) {
     // only artist and tag -- no song
   } else if (artistName && tag) {
 
-    connection.query("SELECT a.name as aname, a.url "
-      + "FROM music_recommender.artist a "
-      + "WHERE a.name = '" + artistName + "' and a.artistID IN "
-      + "(SELECT a.artistID "
-      + "FROM music_recommender.artist a, artist_tag t"
-      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + "));",
+    connection.query(qs.queryArtistTag(artistName, tag),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -103,12 +93,7 @@ app.post('/search', function (req, res) {
     // only song and tag -- no artist
   } else if (songName && tag) {
 
-    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a "
-      + "WHERE s.name = '" + songName + "' and s.createdBy = a.artistID and a.artistID IN "
-      + "(SELECT a.artistID "
-      + "FROM music_recommender.artist a, artist_tag t"
-      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + "));",
+    connection.query(qs.querySongTag(songName, tag),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -117,9 +102,7 @@ app.post('/search', function (req, res) {
     // only artist
   } else if (artistName) {
 
-    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a "
-      + "WHERE a.name = '" + artistName + "' and s.createdBy = a.artistID;",
+    connection.query(qs.queryArtist(artistName),
       function (error, results, fields) {
         if (error) throw error;
         console.log(results[0]);
@@ -130,9 +113,7 @@ app.post('/search', function (req, res) {
     // only song
   } else if (songName) {
 
-    connection.query("SELECT s.name as sname, s.listeners, a.name as aname, a.url "
-      + "FROM music_recommender.song s, music_recommender.artist a "
-      + "WHERE s.name = '" + songName + "' and s.createdBy = a.artistID;",
+    connection.query(qs.querySong(songName),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -141,9 +122,7 @@ app.post('/search', function (req, res) {
     // only tag
   } else if (tag) {
 
-    connection.query("SELECT a.name as aname, a.url "
-      + "FROM music_recommender.artist a, artist_tag t"
-      + " WHERE a.artistID = t.artistID and (" + genTagString(tag) + ");",
+    connection.query(qs.queryTag(tag),
       function (error, results, fields) {
         if (error) throw error;
         res.send(results);
@@ -161,12 +140,3 @@ app.listen(port, function () {
   console.log('Express started, listening to port: ', port);
 });
 
-/* Helpers */
-const genTagString = (tag) => {
-  let str = "t.tagValue = '";
-  tag.forEach((t) => {
-    str = str.concat(t + "' OR t.tagValue = '");
-  });
-  str = str.slice(0, str.length - 18);
-  return str;
-}

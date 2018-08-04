@@ -126,7 +126,13 @@ $(document).ready(function () {
         }
     })
 
-
+    $('#song-pagination').twbsPagination({
+        totalPages: $('#songsInDOM .songItem').length,
+        visiblePages: 7,
+        onPageClick: function (event, page) {
+            $('#songdetails').html($('#song' + (page - 1)).html());
+        }
+    });
 
 
 })

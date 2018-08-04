@@ -1,6 +1,15 @@
 /* Initial Setup */
 var express = require('express');
+var app = express();
+
+var paginateHelper = require('express-handlebars-paginate');
+
+var server = require('http').createServer(app);
+var exphbs = require('express-handlebars');
+var hbs = require('hbs');
 var mysql = require('mysql');
+
+hbs.handlebars.registerHelper('paginateHelper', paginateHelper.createPagination);
 
 let args = process.argv.slice(2);
 let pass = args[0];
@@ -15,8 +24,11 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-/* Server Setup */
-var app = express();
+
+
+app.use(express.static(__dirname));
+app.engine('.hbs', exphbs(hbs));
+app.set('view engine', '.hbs');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +40,10 @@ app.use(function (req, res, next) {
 });
 
 /* Server Routes */
+app.get('/', function (req, res) {
+  res.render('search.hbs');
+});
+
 app.get('/search', function (req, res) {
 
   connection.query("SELECT s.name, s.listeners, a.name, a.url FROM music_recommender.song s, music_recommender.artist a where s.name = 'Va Va Voom' and s.createdBy = a.artistID;", function (error, results, fields) {
@@ -106,7 +122,9 @@ app.post('/search', function (req, res) {
       + "WHERE a.name = '" + artistName + "' and s.createdBy = a.artistID;",
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+        console.log(results[0]);
+        res.render('results', { songs: results, pagination: { totalRows: results.length }});
+        //res.send(results);
       });
 
     // only song
@@ -133,7 +151,7 @@ app.post('/search', function (req, res) {
 
     // nothing entered
   } else {
-    res.send({});
+    res.render('results', {});
   }
 });
 

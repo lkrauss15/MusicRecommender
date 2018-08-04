@@ -40,6 +40,10 @@
     color: skyblue;
 }
 
+.search-label:not(#artistLabel) {
+    margin-top: 10vh;
+}
+
 #sep {
     margin-bottom: 5vh;
 }

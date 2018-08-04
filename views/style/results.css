@@ -20,12 +20,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    color: inherit;
+    color:inherit;
     text-decoration: none;
     margin-bottom: 10px;
 }
 
-.tag-result, .friend-result{
+.song-result {
     height: 2em;
     width: 30%;
     border: 1px solid gray;
@@ -38,10 +38,6 @@
     font-size: 20px;
     font-family: sans-serif;
     color: skyblue;
-}
-
-.search-label:not(#artistLabel) {
-    margin-top: 10vh;
 }
 
 #sep {
@@ -62,7 +58,7 @@
     font-family: sans-serif
 }
 
-.date {
+.listens {
     padding-left: 5px;
     border-left: 3px solid skyblue;
 }
@@ -87,27 +83,10 @@
     width: 80%;
 }
 
-#showRec {
-    cursor: pointer;
-    user-select: none;
-    margin-top: 3em;
-}
-
-#hiddenRecs {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-#artistRecPages {
-    align-self: center;
-}
 
 /* Pagination Styling */
 
-.data-container {
+#artistDataContainer, #songDataContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,21 +94,38 @@
     width: 100%;
 }
 
-.right-triangle {
-    width: 0;
-    height: 0;
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-
-    border-left: 12px solid skyblue;
-
+/*
+.pages {
+    display: inline-block;
 }
 
-.down-triangle {
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-
-    border-top: 12px solid skyblue;
+.pages a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    margin-top: 5em
 }
+.pages a.dots {
+    padding: 8px 5px;
+    cursor: default;
+}
+
+.pages a.active {
+    background-color: #0e57cc;
+    color: white;
+}
+
+.pages a.arrow {
+    font-weight: bolder;
+}
+
+.pages a:hover:not(.active):not(.disabled-arrow):not(.dots) {
+    background-color: #ddd;
+}
+.pages .disabled-arrow {
+    cursor: default;
+    color: lightgray !important;
+}
+*/

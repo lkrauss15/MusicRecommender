@@ -37,7 +37,22 @@
         </div>
         -->
 
-        <div id="artistDataContainer"></div>
+
+
+        <div id="artistDataContainer">
+            {{#each artists}}
+            <div id="artist{{artistID}}" class="artist-result">
+                <a href="{{url}}" class="artist-text">{{aname}}</a>
+
+                <div class="artist-text">
+                    <label>Tags:</label>
+                    <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span>
+                    <button class="edit-tags-button">Edit</button>
+                </div>
+
+            </div>
+            {{/each}}
+        </div>
         <div id="artistPages"></div>
 
         <p id="songLabel" class="search-label">Songs:</p>
@@ -105,7 +120,8 @@
 
                         <div class="artist-text">
                             <label>Tags:</label>
-                            <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span> <!-- TODO -->
+                            <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span>
+                            <!-- TODO -->
                             <button class="edit-tags-button">Edit</button>
                         </div>
 
@@ -115,7 +131,7 @@
         </div>
         {{/each}}
     </div>
-        <!--
+    <!--
         <div class="artist-result">
             <a href="http://www.last.fm/music/Michael+Jackson" class="artist-text" target="_blank">Michael Jackson</a>
 

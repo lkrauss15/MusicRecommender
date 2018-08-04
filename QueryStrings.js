@@ -32,7 +32,7 @@ const querySongTag = (songName, tag) => (
 );
 
 const queryArtist = (artistName) => (
-	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
 FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
 );
@@ -58,6 +58,12 @@ const genTagString = (tag) => {
 	return str;
 }
 
+const getTagsForArtist = (artistID) => (
+`SELECT t.tagValue
+FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+WHERE a.artistID = ${artistID};`
+);
+
 module.exports = {
 	queryArtistSongTag,
 	queryArtistSong,
@@ -65,5 +71,6 @@ module.exports = {
 	querySongTag,
 	queryArtist,
 	querySong,
-	queryTag
+	queryTag,
+	getTagsForArtist
 };

@@ -105,8 +105,21 @@ app.post('/search', function (req, res) {
     connection.query(qs.queryArtist(artistName),
       function (error, results, fields) {
         if (error) throw error;
-        console.log(results[0]);
-        res.render('results', { songs: results, pagination: { totalRows: results.length }});
+        console.log(results);
+        let artists = [];
+        results.forEach(entry => {
+          artists.push({aname: entry.aname, artistID: entry.artistID, url: entry.url})
+        });
+
+        // remove duplicates
+        artists = artists.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.artistID === t.artistID
+          ))
+        )
+
+        console.log(artists);
+        res.render('results', { artists: artists, songs: results});
         //res.send(results);
       });
 

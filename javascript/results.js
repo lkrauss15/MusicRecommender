@@ -11,17 +11,37 @@ $(document).ready(function () {
             $(this).text("Done");
             editingTags = true;
         } else {
+            debugger;
             var newTags = $(".tag-input").val();
+            if (newTags.trim() !== originalTags.trim()) {
+                var newTagsSplit = newTags.split(",");
+                var originalTagsSplit = originalTags.split(",");
 
-            $.post("http://localhost:4000/tag", {
-                    originalTags: originalTags.split(","),
-                    newTags: newTags.split(",")
-                },
-                function (data, status) {
-                    console.log(data);
-                    console.log(status)
+                var tagsToAdd = [];
+                var tagsToRemove = [];
+
+                newTagsSplit.forEach(function (element) {
+                    if (!originalTagsSplit.includes(element)) {
+                        tagsToAdd.push(element);
+                    }
                 });
 
+                originalTagsSplit.forEach(function (element) {
+                    if (!newTagsSplit.includes(element)) {
+                        tagsToRemove.push(element);
+                    }
+                });
+
+
+                $.post("http://localhost:4000/tag", {
+                        originalTags: originalTags.split(","),
+                        newTags: newTags.split(",")
+                    },
+                    function (data, status) {
+                        console.log(data);
+                        console.log(status)
+                    });
+            }
 
             var spanHTML = "<span class='tags'>" + newTags + "</span>"
             $(".tag-input").replaceWith(spanHTML);

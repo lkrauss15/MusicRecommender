@@ -58,6 +58,11 @@ app.get('/search', function (req, res) {
   //res.send({resonse: "Response in this Object"});
 });
 
+app.post('/tag', function(req, res) {
+    var originalTags = req.body.originalTags;
+    var newTags = req.body.newTags;
+});
+
 app.post('/search', function (req, res) {
 
   artistName = req.body.artistName;

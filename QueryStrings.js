@@ -3,7 +3,7 @@ const queryArtistSongTag = (artistName, songName, tag) => (
 	FROM music_recommender.song s, music_recommender.artist a
 	WHERE s.createdBy = a.artistID and s.name = '${songName}' and a.name = '${artistName}' and a.artistID IN
 	(SELECT a.artistID
-		FROM music_recommender.artist a, artist_tag t
+		FROM music_recommender.artist a, music.recommender.artist_tag t
 		WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
@@ -16,9 +16,9 @@ const queryArtistSong = (artistName, songName) => (
 const queryArtistTag = (artistName, tag) => (
 	`SELECT a.name as aname, a.url
 FROM music_recommender.artist a
-WHERE a.name = '${artistName}' and a.artistIID IN 
+WHERE a.name = '${artistName}' and a.artistID IN 
 (SELECT a.artistID
-	FROM music_recommender.artist a, artist_tag t
+	FROM music_recommender.artist a, music_recommender.artist_tag t
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
@@ -27,12 +27,12 @@ const querySongTag = (songName, tag) => (
 	FROM music_recommender.song s, music_recommender.artist a
 	WHERE s.name = '${songName}' and s.createdBy = a.artistID and a.artistID IN 
 	(SELECT a.artistID 
-	FROM music_recommender.artist a, artist_tag t
+	FROM music_recommender.artist a, music_recommender.artist_tag t
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
 const queryArtist = (artistName) => (
-`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
 FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
 );
@@ -44,8 +44,8 @@ const querySong = (songName) => (
 );
 
 const queryTag = (tag) => (
-`SELECT a.name as aname, a.url
-FROM music_recommender.artist a, artist_tag t
+	`SELECT a.name as aname, a.url
+FROM music_recommender.artist a, music_recommender.artist_tag t
 WHERE a.artistID = t.artistID and (${genTagString(tag)});`
 );
 
@@ -57,3 +57,13 @@ const genTagString = (tag) => {
 	str = str.slice(0, str.length - 18);
 	return str;
 }
+
+module.exports = {
+	queryArtistSongTag,
+	queryArtistSong,
+	queryArtistTag,
+	querySongTag,
+	queryArtist,
+	querySong,
+	queryTag
+};

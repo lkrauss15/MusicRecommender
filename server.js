@@ -9,7 +9,7 @@ var paginateHelper = require('express-handlebars-paginate');
 var server = require('http').createServer(app);
 var exphbs = require('express-handlebars');
 var hbs = require('hbs');
-var mysql = require('mysql');
+var mysql = require('mysql2');
 
 hbs.handlebars.registerHelper('paginateHelper', paginateHelper.createPagination);
 

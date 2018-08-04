@@ -31,7 +31,7 @@ const querySongTag = (songName, tag) => (
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
-const queryArtist (artistName) => (
+const queryArtist = (artistName) => (
 `SELECT s.name as sname, s.listeners, a.name as aname, a.url
 FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`

@@ -32,9 +32,23 @@ const querySongTag = (songName, tag) => (
 );
 
 const queryArtist = (artistName) => (
+    /*
 	`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
 FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
+    */
+
+`select art.name, art.url, sub.tags from artist as art join
+(
+SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+FROM (
+	SELECT t.artistID as artistID, t.tagValue as b
+	FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+	WHERE a.name = '${artistName}'
+
+) as filtered
+GROUP BY filtered.artistID )
+as sub on  art.artistID = sub.artistID;`
 );
 
 const querySong = (songName) => (
@@ -43,10 +57,32 @@ const querySong = (songName) => (
 	WHERE s.name = '${songName}' and s.createdBy = a.artistID;`
 );
 
+const querySongGivenArtist = (artistName) => {
+    	`SELECT s.name as sname, s.listeners, a.name as aname
+FROM music_recommender.song s, music_recommender.artist a
+WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
+};
+
 const queryTag = (tag) => (
+    /*
 	`SELECT a.name as aname, a.url
 FROM music_recommender.artist a, music_recommender.artist_tag t
 WHERE a.artistID = t.artistID and (${genTagString(tag)});`
+*/
+`select art.name, art.url, sub.tags from artist as art join
+(
+SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+FROM (
+	SELECT t.artistID as artistID, t.tagValue as b
+	FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+	WHERE a.artistID in (
+		Select a.artistID
+		From artist a, Tag t, artist_tag y
+		Where t.tagValue in ('${tag}') and t.tagValue = y.tagValue and a.artistID = y.artistID
+    )
+) as filtered
+GROUP BY filtered.artistID )
+as sub on  art.artistID = sub.artistID;`
 );
 
 const genTagString = (tag) => {
@@ -65,6 +101,7 @@ WHERE a.artistID = ${artistID};`
 );
 
 module.exports = {
+    querySongGivenArtist,
 	queryArtistSongTag,
 	queryArtistSong,
 	queryArtistTag,

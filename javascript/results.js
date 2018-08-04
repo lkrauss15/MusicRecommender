@@ -67,6 +67,11 @@ $(document).ready(function () {
             //html += constructArtistHTML(item.name, item.url, item.tags);
             html += item;
         });
+
+        if (data.length == 0) {
+            html += "<p>No artists found.</p>";
+        }
+
         return html;
     }
 
@@ -120,6 +125,12 @@ $(document).ready(function () {
             //html += constructSongHTML(item.name, item.artist, item.listens);
             html += item;
         });
+
+        if (data.length == 0) {
+            html += "<p>No songs found.</p>";
+        }
+
+
         return html;
     }
 
@@ -131,7 +142,6 @@ $(document).ready(function () {
             // template method of yourself
             var html = songTemplating(data);
             $('#songDataContainer').html(html);
-            $(".edit-tags-button").click(onClickEditTags);
         }
     })
 

@@ -87,7 +87,7 @@
                 <div class="card-block song-block">
                     <div class="song-result">
 
-                        <span class="inner-text">{{aname}} - {{sname}}</span>
+                        <span class="inner-text song-info">{{aname}} - {{sname}}</span>
                         <span class="inner-text listens">{{listeners}} listens</span>
 
                     </div>
@@ -101,17 +101,21 @@
         {{#each artists}}
         <div id="artist{{artistID}}" class="artistItem">
             <div class="card">
-                <div class="card-header">{{aname}}</div>
+                <div class="card-header">{{name}}</div>
                 <div class="card-block artist-block">
                     <div class="artist-result">
 
-                        <a href="{{url}}" class="artist-text" target="_blank">{{aname}}</a>
+                        <a href="{{url}}" class="artist-text" target="_blank">{{name}}</a>
 
                         <div class="artist-text">
-                            <label>Tags:</label>
-                            <span class="tags">pop, 80s, michael jackson, soul, dance, funk</span>
+
+                            <div class="tag-container">
+                               <label>Tags:</label>
+                               <span class="tags">{{tags}}</span>
+                                <button class="edit-tags-button">Edit</button>
+                            </div>
                             <!-- TODO -->
-                            <button class="edit-tags-button">Edit</button>
+
                         </div>
 
                     </div>

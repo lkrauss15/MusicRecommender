@@ -61,6 +61,11 @@
 .listens {
     padding-left: 5px;
     border-left: 3px solid skyblue;
+    width: 20%;
+}
+
+.song-info {
+    width: 80%;
 }
 
 .artist-text {
@@ -81,6 +86,19 @@
 
 .tag-input {
     width: 80%;
+}
+
+.tags {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tag-container {
+    display: flex;
+    width: 98%;
+    overflow: hidden;
+    text-overflow:ellipsis;
 }
 
 

@@ -21,7 +21,8 @@ var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: pass,
-  database: 'music_recommender'
+  database: 'music_recommender',
+  multipleStatements: true
 });
 
 connection.connect();
@@ -102,13 +103,13 @@ app.post('/search', function (req, res) {
     // only artist
   } else if (artistName) {
 
-    connection.query(qs.queryArtist(artistName),
+    connection.query(qs.queryArtist(artistName) + qs.querySongGivenArtist(artistName),
       function (error, results, fields) {
         if (error) throw error;
         console.log(results);
         let artists = [];
-        results.forEach(entry => {
-          artists.push({aname: entry.aname, artistID: entry.artistID, url: entry.url})
+        results[0].forEach(entry => {
+          artists.push({name: entry.name, artistID: entry.artistID, url: entry.url, tags: entry.tags})
         });
 
         // remove duplicates
@@ -119,7 +120,7 @@ app.post('/search', function (req, res) {
         )
 
         console.log(artists);
-        res.render('results', { artists: artists, songs: results});
+        res.render('results', { artists: artists, songs: results[1]});
         //res.send(results);
       });
 
@@ -138,7 +139,7 @@ app.post('/search', function (req, res) {
     connection.query(qs.queryTag(tag),
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+                res.render('results', {artists: results});
       });
 
     // nothing entered

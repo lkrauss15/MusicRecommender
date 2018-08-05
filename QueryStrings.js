@@ -95,7 +95,7 @@ WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
     FROM (
         SELECT t.artistID as artistID, t.tagValue as b
         FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
-        WHERE a.name = '${artistName}'
+        WHERE a.name like '%${artistName}%'
 
     ) as filtered
     GROUP BY filtered.artistID )
@@ -110,8 +110,14 @@ const querySong = (songName) => (
 
 const querySongGivenArtist = (artistName) => (
 	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
-FROM music_recommender.song s, music_recommender.artist a
-WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
+    FROM music_recommender.song s, music_recommender.artist a
+    WHERE a.name like '%${artistName}%' and s.createdBy = a.artistID;`
+);
+
+const querySongGivenArtistAndSong = (artistName, songName) => (
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+    FROM music_recommender.song s, music_recommender.artist a
+    WHERE a.name like '%${artistName}%' and s.name like "%${songName}%" and s.createdBy = a.artistID;`
 );
 
 const queryTag = (tag) => (
@@ -152,6 +158,7 @@ WHERE a.artistID = ${artistID};`
 );
 
 module.exports = {
+    querySongGivenArtistAndSong,
 	querySongGivenArtist,
 	queryArtistSongTag,
 	queryArtistSong,

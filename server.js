@@ -126,13 +126,13 @@ app.post('/search', function (req, res) {
     // only artist and song -- no tag
   } else if (artistName && songName) {
 
-    connection.query(qs.queryArtistSong(artistName, songName),
+    connection.query(qs.queryArtist(artistName) + qs.querySongGivenArtistAndSong(artistName, songName),
       function (error, results, fields) {
         if (error) throw error;
 
         let artists = [];
-        results.forEach(entry => {
-          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        results[0].forEach(entry => {
+          artists.push({ name: entry.name, artistID: entry.artistID, url: entry.url, tags: entry.tags })
         });
 
         artists = artists.filter((thing, index, self) =>
@@ -141,9 +141,9 @@ app.post('/search', function (req, res) {
           ))
         )
 
-        console.log(artists);
+        console.log(results[0]);
 
-        res.render('results', { artists: artists, songs: results });
+        res.render('results', { artists: artists, songs: results[1] });
       });
 
     // only artist and tag -- no song

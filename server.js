@@ -58,6 +58,17 @@ app.get('/search', function (req, res) {
   //res.send({resonse: "Response in this Object"});
 });
 
+app.post('userID', function(req, res) {
+    var userID = req.body.userID;
+
+    connection.query(getTaggedArtists() + getUserTags() + getFriends() + getRecommendedArtists(),
+      function (error, results, fields) {
+        if (error) throw error;
+        res.render('results', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
+     });
+
+});
+
 app.post('/tag', function(req, res) {
     var tagsToAdd = req.body.tagsToAdd;
     var tagsToRemove = req.body.tagsToRemove;

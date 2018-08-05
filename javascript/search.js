@@ -17,7 +17,7 @@ $(document).ready(function () {
 
     $("#userSearchButton").click(function () {
 
-        $.post("http://localhost:4000/search", {
+        $.post("http://localhost:4000/userID", {
                 userId: $("#userSearch").val(),
             },
             function (data, status) {

@@ -19,77 +19,75 @@ $(document).ready(function () {
     function onClickEditTags() {
         if (!editingTags) {
             originalTags = $(this).prev().text();
-            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>"
+            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>" +
+            "<input class='id-input' placeholder='User id...' type='text'>";
             $(this).prev().replaceWith(inputHTML);
             $(this).text("Done");
             editingTags = true;
         } else {
+            debugger;
             var newTags = $(".tag-input").val();
+            if (newTags.trim() !== originalTags.trim()) {
+                var artistID = $(this).data("artist-id");
+                var userID = $(this).prev().val().trim();
+                if (userID === '') {
+                    userID = '1';
+                }
+                var newTagsSplit = newTags.split(",");
+                var originalTagsSplit = originalTags.split(",");
 
-            $.post("http://localhost:4000/tag", {
-                    originalTags: originalTags.split(","),
-                    newTags: newTags.split(",")
-                },
-                function (data, status) {
-                    console.log(data);
-                    console.log(status)
+                var tagsToAdd = "";
+                var tagsToRemove = "";
+
+                var tagsToAddWithID = "";
+                var tagsToRemoveWithID = "";
+
+                newTagsSplit.forEach(function (element) {
+                    if (!originalTagsSplit.includes(element)) {
+                        tagsToAdd += "(" +artistID + "," + element.trim() + "),";
+                        tagsToAddWithID += "(" +artistID + "," + userID + "," + element.trim() + "," + new Date().toISOString().substring(0, 10) + "),";
+                    }
                 });
 
+                originalTagsSplit.forEach(function (element) {
+                    if (!newTagsSplit.includes(element)) {
+                        tagsToRemove += "(" +artistID + "," + element.trim() + "),";
+                        tagsToRemoveWithID += "(" +artistID + "," + userID + "," + element.trim() + "),";
+                    }
+                });
+
+                tagsToAdd = tagsToAdd.slice(0, -1);
+                tagsToRemove = tagsToRemove.slice(0, -1);
+                tagsToAddWithID = tagsToAddWithID.slice(0, -1);
+                tagsToRemoveWithID = tagsToRemoveWithID.slice(0, -1);
+
+                $.post("http://localhost:4000/tag", {
+                        tagsToAdd: tagsToAdd,
+                        tagsToRemove: tagsToRemove,
+                        tagsToAddWithID: tagsToAddWithID,
+                        tagsToRemoveWithID: tagsToRemoveWithID
+                    },
+                    function (data, status) {
+                        console.log(data);
+                        console.log(status)
+                    });
+            }
 
             var spanHTML = "<span class='tags'>" + newTags + "</span>"
+            $(this).prev().remove();
             $(".tag-input").replaceWith(spanHTML);
+
             $(this).text("Edit");
             editingTags = false;
         }
     }
 
-    /* HTML Construction */
-
-    function constructArtistHTML(name, url, tags) {
-        var html =
-            "<div class='artist-result'>" +
-            "<a class='artist-text' href='" + url + "' target='_blank'>" + name + "</a>" +
-
-            "<div class='artist-text'>" +
-            "<label>Tags: </label>" +
-            "<span class='tags'>" + tags + "</span>" +
-            "<button class='edit-tags-button'>Edit</button>" +
-            "</div>" +
-
-            "</div>";
-
-        return html;
-    }
-
-
-    function constructTagHTML(artist, tag, date) {
-        var html =
-            "<div class='tag-result'>" +
-
-            "<span class='inner-text'>" + artist + ": " + tag + "</span>" +
-            "<span class='inner-text date'>" + date + " </span>" +
-
-            "</div>";
-
-        return html;
-    }
-
-    function constructFriendHTML(friendID) {
-        var html =
-            "<div class='friend-result'>" +
-
-            "<span class='inner-text'>Friend ID: " + friendID + "</span>" +
-            "</div>";
-
-        return html;
-    }
 
     /* Artist Generation */
 
     function artistTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructArtistHTML(item.name, item.url, item.tags);
             html += item;
         });
         return html;
@@ -98,9 +96,6 @@ $(document).ready(function () {
     function getArtistData() {
         var result = [];
 
-        //for (var i=1; i<=50; i++) {
-        //   result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        //}
         $(".artist-block").each(function (index, item) {
             result.push($(item).html());
         });
@@ -117,7 +112,7 @@ $(document).ready(function () {
             // template method of yourself
             var html = artistTemplating(data);
             $('#artistDataContainer').html(html);
-            $(".edit-tags-button").click(onClickEditTags);
+            //$(".edit-tags-button").click(onClickEditTags);
         }
     })
 
@@ -126,9 +121,6 @@ $(document).ready(function () {
     function getTagData() {
         var result = [];
 
-        //for (var i=1; i<=50; i++) {
-        //    result.push({artist: "Artist " + i, tag: "Tag " + i, date: new Date().toLocaleDateString()});
-        //}
         $(".tag-block").each(function (index, item) {
             result.push($(item).html());
         });
@@ -139,7 +131,6 @@ $(document).ready(function () {
     function tagTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructTagHTML(item.artist, item.tag, item.date);
             html += item;
         });
         return html;
@@ -153,7 +144,6 @@ $(document).ready(function () {
             // template method of yourself
             var html = tagTemplating(data);
             $('#tagDataContainer').html(html);
-            $(".edit-tags-button").click(onClickEditTags);
         }
     })
 
@@ -162,9 +152,6 @@ $(document).ready(function () {
     function getFriendData() {
         var result = [];
 
-        //for (var i=1; i<=50; i++) {
-        //    result.push({friendID: i});
-        //}
         $(".friend-block").each(function (index, item) {
             result.push($(item).html());
         });
@@ -175,7 +162,6 @@ $(document).ready(function () {
     function friendTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructFriendHTML(item.friendID);
             html += item;
         });
         return html;
@@ -189,16 +175,14 @@ $(document).ready(function () {
             // template method of yourself
             var html = friendTemplating(data);
             $('#friendDataContainer').html(html);
-            $(".edit-tags-button").click(onClickEditTags);
         }
     })
 
     /* Recommendation Generation */
 
-        function artistRecTemplating(data) {
+    function artistRecTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructArtistHTML(item.name, item.url, item.tags);
             html += item;
         });
         return html;
@@ -207,9 +191,6 @@ $(document).ready(function () {
     function getArtistRecData() {
         var result = [];
 
-        //for (var i=1; i<=50; i++) {
-        //    result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        //}
         $(".artist-rec-block").each(function (index, item) {
             result.push($(item).html());
         });

@@ -71,35 +71,6 @@ $(document).ready(function () {
 
     //$(".edit-tags-button").click(onClickEditTags); //Needs to be called after all artists are created (page load and pagination)
 
-    function constructArtistHTML(name, url, tags) {
-        var html =
-            "<div class='artist-result'>" +
-            "<a class='artist-text' href='" + url + "' target='_blank'>" + name + "</a>" +
-
-            "<div class='artist-text'>" +
-            "<label>Tags: </label>" +
-            "<span class='tags'>" + tags + "</span>" +
-            "<button class='edit-tags-button'>Edit</button>" +
-            "</div>" +
-
-            "</div>";
-
-        return html;
-    }
-
-
-    function constructSongHTML(name, artist, listens) {
-        var html =
-            "<div class='song-result'>" +
-
-            "<span class='inner-text'>" + artist + " - " + name + "</span>" +
-            "<span class='inner-text listens'>" + listens + " listens</span>" +
-
-            "</div>";
-
-        return html;
-    }
-
     function artistTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {

@@ -157,7 +157,6 @@ app.post('/search', function (req, res) {
         results.forEach(entry => {
           artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
         });
-
         artists = artists.filter((thing, index, self) =>
           index === self.findIndex((t) => (
             t.artistID === thing.artistID

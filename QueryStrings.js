@@ -14,7 +14,7 @@ const queryArtistSong = (artistName, songName) => (
 );
 
 const queryArtistTag = (artistName, tag) => (
-    `select art.name as aname, art.url, sub.tags from artist as art join
+    `select art.name as aname, art.url, art.artistID, sub.tags from artist as art join
     (
     SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
     FROM (

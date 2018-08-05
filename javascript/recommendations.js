@@ -209,7 +209,7 @@ $(document).ready(function () {
 
     function getArtistRecData() {
         var result = [];
-
+        debugger;
         $(".artist-rec-block").each(function (index, item) {
             result.push($(item).html());
         });

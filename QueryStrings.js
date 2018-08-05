@@ -55,15 +55,15 @@ const getTaggedArtists = (userID) => (
         )
     ) as filtered
     GROUP BY filtered.artistID )
-    as sub on  art.artistID = sub.artistID`
+    as sub on  art.artistID = sub.artistID;`
 );
 
 const getUserTags = (userID) => (
-    `select a.name, t.tagValue, t.date from artist a join tagged t on a.artistID = t.artistID where userID = '${userID}' order by date desc`
+    `select a.name, t.tagValue, t.date from artist a join tagged t on a.artistID = t.artistID where userID = '${userID}' order by date desc;`
 );
 
 const getFriends = (userID) => (
-    `select friendID from friend where userID = '${userID}'`
+    `select friendID from friend where userID = '${userID}';`
 );
 
 const getRecommendedArtists = (userID) => (

@@ -14,9 +14,9 @@ const queryArtistSong = (artistName, songName) => (
 );
 
 const queryArtistTag = (artistName, tag) => (
-	`SELECT a.name as aname, a.url
+	`SELECT a.name as aname, a.url, a.artistID
 FROM music_recommender.artist a
-WHERE a.name = '${artistName}' and a.artistID IN 
+WHERE a.name LIKE '%${artistName}%' and a.artistID IN 
 (SELECT a.artistID
 	FROM music_recommender.artist a, music_recommender.artist_tag t
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`

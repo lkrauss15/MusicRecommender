@@ -137,7 +137,21 @@ app.post('/search', function (req, res) {
     connection.query(qs.queryArtistTag(artistName, tag),
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+
+        let artists = [];
+        results.forEach(entry => {
+          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        });
+
+        artists = artists.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.artistID === thing.artistID
+          ))
+        )
+
+        console.log(results);
+
+        res.render('results', { artists: artists }); //, songs: results });
       });
 
     // only song and tag -- no artist

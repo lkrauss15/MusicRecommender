@@ -8,9 +8,9 @@ const queryArtistSongTag = (artistName, songName, tag) => (
 );
 
 const queryArtistSong = (artistName, songName) => (
-	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
 	FROM music_recommender.song s, music_recommender.artist a
-	WHERE s.name = '${songName}' and a.name = '${artistName}' and s.createdBy = a.artistID;`
+	WHERE s.name LIKE '%${songName}%' and a.name LIKE '%${artistName}%' and s.createdBy = a.artistID;`
 );
 
 const queryArtistTag = (artistName, tag) => (

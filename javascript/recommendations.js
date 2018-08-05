@@ -18,8 +18,8 @@ $(document).ready(function () {
 
     function onClickEditTags() {
         if (!editingTags) {
-            originalTags = $(this).prev().text().split("'").join("&#39;");
-            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>" +
+            originalTags = $(this).prev().text();
+            var inputHTML = "<input class='tag-input' type='text' value='" + originalTags.split("'").join("&#39;") + "'>" +
                 "<input class='id-input' placeholder='User id...' type='text'>";
             $(this).prev().replaceWith(inputHTML);
             $(this).text("Done");
@@ -33,8 +33,12 @@ $(document).ready(function () {
                 if (userID === '') {
                     userID = '1';
                 }
-                var newTagsSplit = newTags.split(",");
-                var originalTagsSplit = originalTags.split(",");
+                var newTagsSplit = newTags.split(",").map(function(item) {
+                    return item.trim();
+                });
+                var originalTagsSplit = originalTags.split(",").map(function(item) {
+                    return item.trim();
+                });
 
                 var tagsToAdd = "";
                 var tagsToRemove = "";
@@ -44,15 +48,15 @@ $(document).ready(function () {
 
                 newTagsSplit.forEach(function (element) {
                     if (!originalTagsSplit.includes(element)) {
-                        tagsToAdd += "(" + artistID + ",'" + element.trim() + "'),";
-                        tagsToAddWithID += "(" + artistID + "," + userID + ",'" + element.trim() + "','" + new Date().toISOString().substring(0, 10) + "'),";
+                        tagsToAdd += "(" + artistID + ",'" + element.trim().split("'").join("''") + "'),";
+                        tagsToAddWithID += "(" + artistID + "," + userID + ",'" + element.trim().split("'").join("''") + "','" + new Date().toISOString().substring(0, 10) + "'),";
                     }
                 });
 
                 originalTagsSplit.forEach(function (element) {
                     if (!newTagsSplit.includes(element)) {
-                        tagsToRemove += "(" + artistID + ",'" + element.trim() + "'),";
-                        tagsToRemoveWithID += "(" + artistID + "," + userID + ",'" + element.trim() + "'),";
+                        tagsToRemove += "(" + artistID + ",'" + element.trim().split("'").join("''") + "'),";
+                        tagsToRemoveWithID += "(" + artistID + "," + userID + ",'" + element.trim().split("'").join("''") + "'),";
                     }
                 });
 

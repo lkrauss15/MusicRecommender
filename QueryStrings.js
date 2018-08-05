@@ -126,7 +126,7 @@ const queryTag = (tag) => (
 FROM music_recommender.artist a, music_recommender.artist_tag t
 WHERE a.artistID = t.artistID and (${genTagString(tag)});`
 */
-	`select art.name, art.url, sub.tags from artist as art join
+	`select art.name, art.url, art.artistID, sub.tags from artist as art join
     (
     SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
     FROM (
@@ -140,6 +140,26 @@ WHERE a.artistID = t.artistID and (${genTagString(tag)});`
     ) as filtered
     GROUP BY filtered.artistID )
     as sub on  art.artistID = sub.artistID;`
+);
+
+const querySongByTagAndName = (songName, tag) => (
+    `select s.songID, s.name as sname, s.listeners, filteredArtists.name as aname from song s join (
+    select art.artistID, art.name from artist as art join
+    (
+    SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b
+        FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+        WHERE a.artistID in (
+            Select a.artistID
+            From artist a, Tag t, artist_tag y
+            Where t.tagValue = y.tagValue and a.artistID = y.artistID and (${genTagString(tag)})
+        )
+    ) as filtered
+    GROUP BY filtered.artistID )
+    as sub on  art.artistID = sub.artistID
+    ) as filteredArtists on s.createdBy = filteredArtists.artistID
+    where s.name like '%${songName}%';`
 );
 
 const genTagString = (tag) => {
@@ -159,6 +179,7 @@ WHERE a.artistID = ${artistID};`
 
 module.exports = {
     querySongGivenArtistAndSong,
+    querySongByTagAndName,
 	querySongGivenArtist,
 	queryArtistSongTag,
 	queryArtistSong,

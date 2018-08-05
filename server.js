@@ -63,12 +63,17 @@ app.post('/userid', function (req, res) {
   var userID = req.body.userId;
 
 
-  console.log(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID));
-  connection.query(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID),
+  //console.log(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID));
+  connection.query(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID),
     function (error, results, fields) {
       if (error) throw error;
-      console.log(results);
-      res.render('recommendations', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
+      //console.log(results[1]);
+
+      connection.query(qs.getRecommendedArtists(userID, results[1].map(r => (r.tagValue))),
+        function (error, recs, fields) {
+          console.log('recs is: ', recs);
+          res.render('recommendations', { artists: results[0], tags: results[1], friends: results[2], artistsRec: recs });
+        });
     });
 
 });
@@ -82,22 +87,22 @@ app.post('/tag', function (req, res) {
 
   var queryString = '';
 
-    if (tagsToAdd !== '') {
-        queryString += qs.addTag(tags, tagsToAdd, tagsToAddWithID);
-    }
+  if (tagsToAdd !== '') {
+    queryString += qs.addTag(tags, tagsToAdd, tagsToAddWithID);
+  }
 
-    if (tagsToRemove !== '') {
-        queryString += qs.removeTag(tagsToRemove, tagsToRemoveWithID);
-    }
+  if (tagsToRemove !== '') {
+    queryString += qs.removeTag(tagsToRemove, tagsToRemoveWithID);
+  }
 
   console.log("=========================================================");
-    console.log(queryString);
+  console.log(queryString);
 
   connection.query(queryString,
     function (error, results, fields) {
       if (error) throw error;
       res.send(results); //No results, nothing to render
-   });
+    });
 
 });
 
@@ -199,7 +204,7 @@ app.post('/search', function (req, res) {
           ))
         )
 
-        res.render('results', {artists: artists, songs: results[1] });
+        res.render('results', { artists: artists, songs: results[1] });
       });
 
     // only artist
@@ -232,7 +237,7 @@ app.post('/search', function (req, res) {
     connection.query(qs.querySong(songName),
       function (error, results, fields) {
         if (error) throw error;
-        
+
         // let artists = [];
         // results.forEach(entry => {
         //   artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })

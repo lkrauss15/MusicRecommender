@@ -191,6 +191,7 @@ const querySongByTagAndName = (songName, tag) => (
 );
 
 const genTagString = (tag) => {
+	console.log('genTag tag is: ', tag);
 	let str = "t.tagValue = '";
 	tag.forEach((t) => {
 		str = str.concat(t + "' OR t.tagValue = '");

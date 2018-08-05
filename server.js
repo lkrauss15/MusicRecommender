@@ -69,8 +69,10 @@ app.post('/userid', function (req, res) {
       if (error) throw error;
       //console.log(results[1]);
 
+      console.log(qs.getRecommendedArtists(userID, results[1].map(r => (r.tagValue))));
       connection.query(qs.getRecommendedArtists(userID, results[1].map(r => (r.tagValue))),
         function (error, recs, fields) {
+          if (error) throw error;
           console.log('recs is: ', recs);
           res.render('recommendations', { artists: results[0], tags: results[1], friends: results[2], artistsRec: recs });
         });

@@ -209,7 +209,7 @@ app.post('/search', function (req, res) {
         )
 
         console.log(artists);
-        res.render('results', { artists: artists, songs: results[1] });
+        res.render('results', { artists: artists }); //, songs: results[1] });
         //res.send(results);
       });
 

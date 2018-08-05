@@ -40,6 +40,7 @@ $(document).ready(function () {
                     return item.trim();
                 });
 
+                var tags = "";
                 var tagsToAdd = "";
                 var tagsToRemove = "";
 
@@ -48,6 +49,7 @@ $(document).ready(function () {
 
                 newTagsSplit.forEach(function (element) {
                     if (!originalTagsSplit.includes(element)) {
+                        tags += "('" + element.trim().split("'").join("''") + "'),";
                         tagsToAdd += "(" + artistID + ",'" + element.trim().split("'").join("''") + "'),";
                         tagsToAddWithID += "(" + artistID + "," + userID + ",'" + element.trim().split("'").join("''") + "','" + new Date().toISOString().substring(0, 10) + "'),";
                     }
@@ -60,12 +62,14 @@ $(document).ready(function () {
                     }
                 });
 
+                tags = tags.slice(0, -1);
                 tagsToAdd = tagsToAdd.slice(0, -1);
                 tagsToRemove = tagsToRemove.slice(0, -1);
                 tagsToAddWithID = tagsToAddWithID.slice(0, -1);
                 tagsToRemoveWithID = tagsToRemoveWithID.slice(0, -1);
 
                 $.post("http://localhost:4000/tag", {
+                        tags: tags,
                         tagsToAdd: tagsToAdd,
                         tagsToRemove: tagsToRemove,
                         tagsToAddWithID: tagsToAddWithID,

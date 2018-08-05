@@ -60,8 +60,9 @@ const querySongTag = (songName, tag) => (
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
 );
 
-const addTag = (artistTagPairs, artistTagPairsWithID) => (
-    `insert into artist_tag (artistID, tagValue) values ${artistTagPairs};
+const addTag = (tags, artistTagPairs, artistTagPairsWithID) => (
+    `insert ignore into tag (tagValue) values ${tags};
+     insert into artist_tag (artistID, tagValue) values ${artistTagPairs};
      insert into tagged (artistID, userID, tagValue, date) values ${artistTagPairsWithID};
     `
 );

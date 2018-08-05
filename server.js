@@ -74,6 +74,7 @@ app.post('/userid', function (req, res) {
 });
 
 app.post('/tag', function (req, res) {
+  var tags = req.body.tags;
   var tagsToAdd = req.body.tagsToAdd;
   var tagsToRemove = req.body.tagsToRemove;
   var tagsToAddWithID = req.body.tagsToAddWithID;
@@ -82,7 +83,7 @@ app.post('/tag', function (req, res) {
   var queryString = '';
 
     if (tagsToAdd !== '') {
-        queryString += qs.addTag(tagsToAdd, tagsToAddWithID);
+        queryString += qs.addTag(tags, tagsToAdd, tagsToAddWithID);
     }
 
     if (tagsToRemove !== '') {

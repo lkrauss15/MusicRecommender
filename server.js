@@ -68,7 +68,7 @@ app.post('/userid', function (req, res) {
     function (error, results, fields) {
       if (error) throw error;
       console.log(results);
-      res.render('results', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
+      res.render('recommendations', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
     });
 
 });

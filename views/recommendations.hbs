@@ -4,7 +4,7 @@
 
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.1/jquery.twbsPagination.min.js"></script>
-    <link rel="stylesheet" href="../../../style/results.css">
+    <link rel="stylesheet" href="../../../style/pagination.css">
     <link rel="stylesheet" href="../../../style/recommendations.css">
 
     <script src="../../../javascript/jquery-3.3.1.js"></script>
@@ -20,11 +20,6 @@
 
     <div id="resultsContainer">
 
-        <div id="pageContainer">
-
-                <div id="pageContainer">
-
-        </div>
         <p id="artistLabel" class="search-label">Artists you've listened to:</p>
 
         <div class="data-container" id="artistDataContainer"></div>
@@ -83,11 +78,11 @@
         {{#each tags}}
         <div id="tag{{@index}}" class="tagItem">
             <div class="card">
-                <div class="card-header">{{artist}}</div>
+                <div class="card-header">{{name}}</div>
                 <div class="card-block tag-block">
                     <div class="tag-result">
 
-                        <span class='inner-text tag-info'> {{artist}}:  {{tagValue}} </span>
+                        <span class='inner-text tag-info'> {{name}}:  {{tagValue}} </span>
                         <span class='inner-text date'> {{date}} </span>
 
                     </div>

@@ -149,5 +149,9 @@ module.exports = {
 	queryArtist,
 	querySong,
 	queryTag,
-	getTagsForArtist
+	getTagsForArtist,
+	getTaggedArtists,
+	getUserTags,
+	getFriends,
+	getRecommendedArtists
 };

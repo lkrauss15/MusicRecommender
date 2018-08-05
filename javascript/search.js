@@ -17,10 +17,11 @@ $(document).ready(function () {
 
     $("#userSearchButton").click(function () {
 
-        $.post("http://localhost:4000/userID", {
+        $.post("http://localhost:4000/userid", {
                 userId: $("#userSearch").val(),
             },
             function (data, status) {
+                $("body").html(data);
                 console.log(data);
                 console.log(status)
             });

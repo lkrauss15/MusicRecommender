@@ -85,7 +85,27 @@ app.post('/search', function (req, res) {
     connection.query(qs.queryArtistSongTag(artistName, songName, tag),
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+        //console.log(results);
+
+        let artists = [];
+        results.forEach(entry => {
+          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        });
+
+        console.log(artists);
+
+        // remove duplicates
+        artists = artists.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.artistID === thing.artistID
+          ))
+        )
+
+        //let uniq = [...new Set(artists)];
+        //console.log(artists);
+        //res.send(artists);
+        res.render('results', { artists: artists, songs: results });
+
       });
 
     // only artist and song -- no tag
@@ -130,7 +150,7 @@ app.post('/search', function (req, res) {
         // remove duplicates
         artists = artists.filter((thing, index, self) =>
           index === self.findIndex((t) => (
-            t.artistID === t.artistID
+            t.artistID === thing.artistID
           ))
         )
 

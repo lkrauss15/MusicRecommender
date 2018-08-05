@@ -59,7 +59,7 @@ const getTaggedArtists = (userID) => (
 );
 
 const getUserTags = (userID) => (
-    `select a.name, t.tagValue, DATE_FORMAT(t.date, "%Y-%m-%d") as date from artist a join tagged t on a.artistID = t.artistID where userID = ${userID} order by date desc;`
+    `select a.name, t.tagValue, DATE_FORMAT(t.date, "%Y-%m-%d") as date, a.url from artist a join tagged t on a.artistID = t.artistID where userID = ${userID} order by date desc, a.name;`
 );
 
 const getFriends = (userID) => (
@@ -98,7 +98,7 @@ const querySong = (songName) => (
 );
 
 const querySongGivenArtist = (artistName) => (
-	`SELECT s.name as sname, s.listeners, a.name as aname
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
 FROM music_recommender.song s, music_recommender.artist a
 WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
 );

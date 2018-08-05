@@ -4,7 +4,7 @@ $(document).ready(function () {
     var editingTags = false;
     var hidden = true;
 
-    $("#showRec").click(function() {
+    $("#showRec").click(function () {
         $("#hiddenRecs").slideToggle(300);
         if (!hidden) {
             $("#showRec").text("Show recommended artists \u25B6");
@@ -20,7 +20,7 @@ $(document).ready(function () {
         if (!editingTags) {
             originalTags = $(this).prev().text();
             var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>" +
-            "<input class='id-input' placeholder='User id...' type='text'>";
+                "<input class='id-input' placeholder='User id...' type='text'>";
             $(this).prev().replaceWith(inputHTML);
             $(this).text("Done");
             editingTags = true;
@@ -44,15 +44,15 @@ $(document).ready(function () {
 
                 newTagsSplit.forEach(function (element) {
                     if (!originalTagsSplit.includes(element)) {
-                        tagsToAdd += "(" +artistID + "," + element.trim() + "),";
-                        tagsToAddWithID += "(" +artistID + "," + userID + "," + element.trim() + "," + new Date().toISOString().substring(0, 10) + "),";
+                        tagsToAdd += "(" + artistID + "," + element.trim() + "),";
+                        tagsToAddWithID += "(" + artistID + "," + userID + "," + element.trim() + "," + new Date().toISOString().substring(0, 10) + "),";
                     }
                 });
 
                 originalTagsSplit.forEach(function (element) {
                     if (!newTagsSplit.includes(element)) {
-                        tagsToRemove += "(" +artistID + "," + element.trim() + "),";
-                        tagsToRemoveWithID += "(" +artistID + "," + userID + "," + element.trim() + "),";
+                        tagsToRemove += "(" + artistID + "," + element.trim() + "),";
+                        tagsToRemoveWithID += "(" + artistID + "," + userID + "," + element.trim() + "),";
                     }
                 });
 
@@ -175,6 +175,17 @@ $(document).ready(function () {
             // template method of yourself
             var html = friendTemplating(data);
             $('#friendDataContainer').html(html);
+
+            $(".friend-result").click(function () {
+                $.post("http://localhost:4000/userid", {
+                        userId: $(this).data("friend-id"),
+                    },
+                    function (data, status) {
+                        $("body").html(data);
+                        console.log(data);
+                        console.log(status)
+                    });
+            });
         }
     })
 

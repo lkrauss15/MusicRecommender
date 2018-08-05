@@ -82,7 +82,7 @@
                 <div class="card-block tag-block">
                     <div class="tag-result">
 
-                        <span class='inner-text tag-info'> {{name}}:  {{tagValue}} </span>
+                        <span class='inner-text tag-info'><a href="{{url}}" target="_blank">{{name}}</a>:  {{tagValue}} </span>
                         <span class='inner-text date'> {{date}} </span>
 
                     </div>
@@ -98,7 +98,7 @@
         <div id="friend{{@index}}" class="tagItem">
             <div class="card">
                 <div class="card-block friend-block">
-                    <div class="friend-result">
+                    <div data-friend-id="{{friendID}}" class="friend-result">
 
                         <span class='inner-text'>Friend ID: {{friendID}} </span>
 

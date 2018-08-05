@@ -34,6 +34,10 @@
     margin-bottom: 10px;
 }
 
+.friend-result {
+    cursor: pointer;
+}
+
 .search-label {
     font-size: 20px;
     font-family: sans-serif;
@@ -127,8 +131,6 @@
 #artistRecPages {
     align-self: center;
 }
-
-/* Pagination Styling */
 
 .data-container {
     display: flex;

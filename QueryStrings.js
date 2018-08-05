@@ -1,10 +1,28 @@
 const queryArtistSongTag = (artistName, songName, tag) => (
-	`SELECT s.name as sname,s.listeners, a.name as aname, a.url, a.artistID
-	FROM music_recommender.song s, music_recommender.artist a
-	WHERE s.createdBy = a.artistID and s.name LIKE '%${songName}%' and a.name LIKE '%${artistName}%' and a.artistID IN
-	(SELECT a.artistID
-		FROM music_recommender.artist a, music_recommender.artist_tag t
-		WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
+	// `SELECT s.name as sname,s.listeners, a.name as aname, a.url, a.artistID
+	// FROM music_recommender.song s, music_recommender.artist a
+	// WHERE s.createdBy = a.artistID and s.name LIKE '%${songName}%' and a.name LIKE '%${artistName}%' and a.artistID IN
+	// (SELECT a.artistID
+	// 	FROM music_recommender.artist a, music_recommender.artist_tag t
+	// 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
+
+		`select sname, art.name as aname, art.url, art.artistID, sub.tags from artist as art join
+    (
+    SELECT filtered.sname, filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b, s.name as sname
+        FROM (music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID) join music_recommender.song s on s.createdBy = a.artistID
+        WHERE s.name LIKE '%${songName}%' and a.artistID in (
+                            SELECT a.artistID
+                            FROM music_recommender.artist a
+                            WHERE a.name LIKE '%${artistName}%' and a.artistID IN
+                                (SELECT a.artistID
+                                    FROM music_recommender.artist a, music_recommender.artist_tag t
+                                    WHERE a.artistID = t.artistID and (${genTagString(tag)}))
+                            )
+    ) as filtered
+    GROUP BY filtered.artistID, filtered.sname )
+    as sub on  art.artistID = sub.artistID;`
 );
 
 const queryArtistSong = (artistName, songName) => (

@@ -14,12 +14,23 @@ const queryArtistSong = (artistName, songName) => (
 );
 
 const queryArtistTag = (artistName, tag) => (
-	`SELECT a.name as aname, a.url, a.artistID
-FROM music_recommender.artist a
-WHERE a.name LIKE '%${artistName}%' and a.artistID IN 
-(SELECT a.artistID
-	FROM music_recommender.artist a, music_recommender.artist_tag t
-	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
+    `select art.name as aname, art.url, sub.tags from artist as art join
+    (
+    SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b
+        FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+        WHERE a.artistID in (
+                            SELECT a.artistID
+                            FROM music_recommender.artist a
+                            WHERE a.name LIKE '%${artistName}%' and a.artistID IN
+                                (SELECT a.artistID
+                                    FROM music_recommender.artist a, music_recommender.artist_tag t
+                                    WHERE a.artistID = t.artistID and (${genTagString(tag)}))
+                            )
+    ) as filtered
+    GROUP BY filtered.artistID )
+    as sub on  art.artistID = sub.artistID`
 );
 
 const querySongTag = (songName, tag) => (

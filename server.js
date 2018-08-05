@@ -78,13 +78,25 @@ app.post('/tag', function (req, res) {
   var tagsToRemove = req.body.tagsToRemove;
   var tagsToAddWithID = req.body.tagsToAddWithID;
   var tagsToRemoveWithID = req.body.tagsToRemoveWithID;
-  console.log(tagsToAdd, tagsToRemove, tagsToAddWithID, tagsToRemoveWithID);
 
-  //connection.query(addTag(tagsToAdd, tagsToAddWithID) + removeTag(tagsToRemove, tagsToRemoveWithID),
-  //  function (error, results, fields) {
-  //    if (error) throw error;
-  //    res.send(results); //No results, nothing to render
-  // });
+  var queryString = '';
+
+    if (tagsToAdd !== '') {
+        queryString += qs.addTag(tagsToAdd, tagsToAddWithID);
+    }
+
+    if (tagsToRemove !== '') {
+        queryString += qs.removeTag(tagsToRemove, tagsToRemoveWithID);
+    }
+
+  console.log("=========================================================");
+    console.log(queryString);
+
+  connection.query(queryString,
+    function (error, results, fields) {
+      if (error) throw error;
+      res.send(results); //No results, nothing to render
+   });
 
 });
 

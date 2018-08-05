@@ -5,7 +5,8 @@ $(document).ready(function () {
 
     function onClickEditTags() {
         if (!editingTags) {
-            originalTags = $(this).prev().text();
+            debugger;
+            originalTags = $(this).prev().text().split("'").join("&#39;");
             var inputHTML = "<input class='tag-input' type='text' value='" + originalTags + "'>" +
             "<input class='id-input' placeholder='User id...' type='text'>";
             $(this).prev().replaceWith(inputHTML);
@@ -31,15 +32,15 @@ $(document).ready(function () {
 
                 newTagsSplit.forEach(function (element) {
                     if (!originalTagsSplit.includes(element)) {
-                        tagsToAdd += "(" +artistID + "," + element.trim() + "),";
-                        tagsToAddWithID += "(" +artistID + "," + userID + "," + element.trim() + "," + new Date().toISOString().substring(0, 10) + "),";
+                        tagsToAdd += "(" +artistID + ",'" + element.trim() + "'),";
+                        tagsToAddWithID += "(" +artistID + "," + userID + ",'" + element.trim() + "','" + new Date().toISOString().substring(0, 10) + "'),";
                     }
                 });
 
                 originalTagsSplit.forEach(function (element) {
                     if (!newTagsSplit.includes(element)) {
-                        tagsToRemove += "(" +artistID + "," + element.trim() + "),";
-                        tagsToRemoveWithID += "(" +artistID + "," + userID + "," + element.trim() + "),";
+                        tagsToRemove += "(" +artistID + ",'" + element.trim() + "'),";
+                        tagsToRemoveWithID += "(" +artistID + "," + userID + ",'" + element.trim() + "'),";
                     }
                 });
 

@@ -68,7 +68,7 @@ const addTag = (artistTagPairs, artistTagPairsWithID) => (
 
 const removeTag = (artistTagPairs, artistTagPairsWithID) => (
     `delete from artist_tag where (artistID, tagValue) in (${artistTagPairs});
-     delete from artist_tag where (artistID, userID, tagValue) in (${artistTagPairsWithID});
+     delete from tagged where (artistID, userID, tagValue) in (${artistTagPairsWithID});
     `
 );
 
@@ -206,9 +206,11 @@ module.exports = {
 	queryArtist,
 	querySong,
 	queryTag,
+    getRecommendedArtists,
 	getTagsForArtist,
 	getTaggedArtists,
 	getUserTags,
 	getFriends,
-	getRecommendedArtists
+    removeTag,
+    addTag
 };

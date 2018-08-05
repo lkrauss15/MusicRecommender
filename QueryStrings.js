@@ -98,6 +98,7 @@ const getFriends = (userID) => (
 
 const getRecommendedArtists = (userID, tag) => (
 		//TODO idk. hard?
+    /*
 		`select a.artistID, sum(s.listeners), a.name as aname, a.url
 from music_recommender.artist a, music_recommender.song s
 where s.createdBy = a.artistID and a.artistID IN
@@ -106,7 +107,29 @@ where s.createdBy = a.artistID and a.artistID IN
 	where a.artistID = t.artistID and (${genTagString(tag)}) and t.userID = ${userID})
 Group By a.artistID, a.name
 Order By sum(s.listeners) desc
-LImit 0 , 5;`
+LImit 0 , 5;` */
+
+
+    `select art.name as aname, art.url, sub.tags from artist as art join
+    (
+    SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
+    FROM (
+        SELECT t.artistID as artistID, t.tagValue as b
+        FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
+        WHERE a.artistID in (
+            select a.artistID
+            from music_recommender.artist a, music_recommender.song s
+            where s.createdBy = a.artistID and a.artistID IN
+                (select a.artistID
+                from music_recommender.artist a, music_recommender.tagged t
+                where a.artistID = t.artistID and (${genTagString(tag)}) and t.userID = ${userID})
+            Group By a.artistID, a.name
+            Order By sum(s.listeners) desc
+        )
+    ) as filtered
+    GROUP BY filtered.artistID )
+    as sub on  art.artistID = sub.artistID`
+
 );
 
 

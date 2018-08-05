@@ -231,7 +231,7 @@ app.post('/search', function (req, res) {
         //   ))
         // )
 
-        res.render('results', { ongs: results });
+        res.render('results', { songs: results });
       });
 
     // only tag

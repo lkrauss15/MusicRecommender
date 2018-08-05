@@ -59,7 +59,7 @@ const getTaggedArtists = (userID) => (
 );
 
 const getUserTags = (userID) => (
-    `select a.name, t.tagValue, t.date from artist a join tagged t on a.artistID = t.artistID where userID = ${userID} order by date desc;`
+    `select a.name, t.tagValue, DATE_FORMAT(t.date, "%Y-%m-%d") as date from artist a join tagged t on a.artistID = t.artistID where userID = ${userID} order by date desc;`
 );
 
 const getFriends = (userID) => (

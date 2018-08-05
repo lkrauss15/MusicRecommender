@@ -98,7 +98,7 @@ const getFriends = (userID) => (
 
 const getRecommendedArtists = (userID, tag) => (
 		//TODO idk. hard?
-		`select a.artistID, sum(s.listeners), a.name as aname
+		`select a.artistID, sum(s.listeners), a.name as aname, a.url
 from music_recommender.artist a, music_recommender.song s
 where s.createdBy = a.artistID and a.artistID IN
 	(select a.artistID

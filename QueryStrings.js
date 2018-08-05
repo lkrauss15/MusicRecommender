@@ -96,9 +96,18 @@ const getFriends = (userID) => (
     `select friendID from friend where userID = ${userID};`
 );
 
-const getRecommendedArtists = (userID) => (
-    ``//TODO idk. hard?
-)
+const getRecommendedArtists = (userID, tag) => (
+		//TODO idk. hard?
+		`select a.artistID, sum(s.listeners), a.name as aname
+from music_recommender.artist a, music_recommender.song s
+where s.createdBy = a.artistID and a.artistID IN
+	(select a.artistID
+	from music_recommender.artist a, music_recommender.tagged t
+	where a.artistID = t.artistID and t.tagValue = (${genTagString(tag)}) and t.userID = ${userID})
+Group By a.artistID, a.name
+Order By sum(s.listeners) desc
+LImit 0 , 5;`
+);
 
 
 const queryArtist = (artistName) => (

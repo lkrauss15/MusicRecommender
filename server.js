@@ -175,7 +175,19 @@ app.post('/search', function (req, res) {
     connection.query(qs.querySongTag(songName, tag),
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+
+        let artists = [];
+        results.forEach(entry => {
+          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        });
+
+        artists = artists.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.artistID === thing.artistID
+          ))
+        )
+
+        res.render('results', {artists: artists, songs: results });
       });
 
     // only artist
@@ -208,7 +220,19 @@ app.post('/search', function (req, res) {
     connection.query(qs.querySong(songName),
       function (error, results, fields) {
         if (error) throw error;
-        res.send(results);
+        
+        let artists = [];
+        results.forEach(entry => {
+          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        });
+
+        artists = artists.filter((thing, index, self) =>
+          index === self.findIndex((t) => (
+            t.artistID === thing.artistID
+          ))
+        )
+
+        res.render('results', { artists: artists, songs: results });
       });
 
     // only tag

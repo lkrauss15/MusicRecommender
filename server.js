@@ -220,18 +220,18 @@ app.post('/search', function (req, res) {
       function (error, results, fields) {
         if (error) throw error;
         
-        let artists = [];
-        results.forEach(entry => {
-          artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
-        });
+        // let artists = [];
+        // results.forEach(entry => {
+        //   artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
+        // });
 
-        artists = artists.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.artistID === thing.artistID
-          ))
-        )
+        // artists = artists.filter((thing, index, self) =>
+        //   index === self.findIndex((t) => (
+        //     t.artistID === thing.artistID
+        //   ))
+        // )
 
-        res.render('results', { artists: artists, songs: results });
+        res.render('results', { ongs: results });
       });
 
     // only tag

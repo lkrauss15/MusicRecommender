@@ -51,7 +51,7 @@ const getTaggedArtists = (userID) => (
         SELECT t.artistID as artistID, t.tagValue as b
         FROM music_recommender.artist_tag t join music_recommender.artist a on t.artistID = a.artistID
         WHERE a.artistID in (
-            select artistID from listened where userID = '${userID}'
+            select artistID from listened where userID = ${userID}
         )
     ) as filtered
     GROUP BY filtered.artistID )
@@ -59,11 +59,11 @@ const getTaggedArtists = (userID) => (
 );
 
 const getUserTags = (userID) => (
-    `select a.name, t.tagValue, t.date from artist a join tagged t on a.artistID = t.artistID where userID = '${userID}' order by date desc;`
+    `select a.name, t.tagValue, t.date from artist a join tagged t on a.artistID = t.artistID where userID = ${userID} order by date desc;`
 );
 
 const getFriends = (userID) => (
-    `select friendID from friend where userID = '${userID}';`
+    `select friendID from friend where userID = ${userID};`
 );
 
 const getRecommendedArtists = (userID) => (

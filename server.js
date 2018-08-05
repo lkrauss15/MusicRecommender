@@ -58,30 +58,33 @@ app.get('/search', function (req, res) {
   //res.send({resonse: "Response in this Object"});
 });
 
-app.post('/userid', function(req, res) {
-    console.log('in userID');
-    var userID = req.body.userID;
+app.post('/userid', function (req, res) {
 
-    connection.query(qs.getTaggedArtists() + qs.getUserTags() + qs.getFriends() + qs.getRecommendedArtists(),
-      function (error, results, fields) {
-        if (error) throw error;
-        res.render('results', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
-     });
+  var userID = req.body.userId;
+
+
+  console.log(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID));
+  connection.query(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID),
+    function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.render('results', { artists: results[0], tags: results[1], friends: results[2], artistsRec: results[3] });
+    });
 
 });
 
-app.post('/tag', function(req, res) {
-    var tagsToAdd = req.body.tagsToAdd;
-    var tagsToRemove = req.body.tagsToRemove;
-    var tagsToAddWithID = req.body.tagsToAddWithID;
-    var tagsToRemoveWithID = req.body.tagsToRemoveWithID;
-    console.log(tagsToAdd, tagsToRemove, tagsToAddWithID, tagsToRemoveWithID);
+app.post('/tag', function (req, res) {
+  var tagsToAdd = req.body.tagsToAdd;
+  var tagsToRemove = req.body.tagsToRemove;
+  var tagsToAddWithID = req.body.tagsToAddWithID;
+  var tagsToRemoveWithID = req.body.tagsToRemoveWithID;
+  console.log(tagsToAdd, tagsToRemove, tagsToAddWithID, tagsToRemoveWithID);
 
-    //connection.query(addTag(tagsToAdd, tagsToAddWithID) + removeTag(tagsToRemove, tagsToRemoveWithID),
-    //  function (error, results, fields) {
-    //    if (error) throw error;
-    //    res.send(results); //No results, nothing to render
-    // });
+  //connection.query(addTag(tagsToAdd, tagsToAddWithID) + removeTag(tagsToRemove, tagsToRemoveWithID),
+  //  function (error, results, fields) {
+  //    if (error) throw error;
+  //    res.send(results); //No results, nothing to render
+  // });
 
 });
 
@@ -184,7 +187,7 @@ app.post('/search', function (req, res) {
         console.log(results);
         let artists = [];
         results[0].forEach(entry => {
-          artists.push({name: entry.name, artistID: entry.artistID, url: entry.url, tags: entry.tags})
+          artists.push({ name: entry.name, artistID: entry.artistID, url: entry.url, tags: entry.tags })
         });
 
         // remove duplicates
@@ -195,7 +198,7 @@ app.post('/search', function (req, res) {
         )
 
         console.log(artists);
-        res.render('results', { artists: artists, songs: results[1]});
+        res.render('results', { artists: artists, songs: results[1] });
         //res.send(results);
       });
 
@@ -214,7 +217,7 @@ app.post('/search', function (req, res) {
     connection.query(qs.queryTag(tag),
       function (error, results, fields) {
         if (error) throw error;
-                res.render('results', {artists: results});
+        res.render('results', { artists: results });
       });
 
     // nothing entered

@@ -34,9 +34,9 @@ const queryArtistTag = (artistName, tag) => (
 );
 
 const querySongTag = (songName, tag) => (
-	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
 	FROM music_recommender.song s, music_recommender.artist a
-	WHERE s.name = '${songName}' and s.createdBy = a.artistID and a.artistID IN 
+	WHERE s.name LIKE '%${songName}%' and s.createdBy = a.artistID and a.artistID IN 
 	(SELECT a.artistID 
 	FROM music_recommender.artist a, music_recommender.artist_tag t
 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
@@ -103,9 +103,9 @@ WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
 );
 
 const querySong = (songName) => (
-	`SELECT s.name as sname, s.listeners, a.name as aname, a.url
+	`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
 	FROM music_recommender.song s, music_recommender.artist a
-	WHERE s.name = '${songName}' and s.createdBy = a.artistID;`
+	WHERE s.name LIKE '%${songName}%' and s.createdBy = a.artistID;`
 );
 
 const querySongGivenArtist = (artistName) => (

@@ -117,10 +117,8 @@ $(document).ready(function () {
             done(getArtistData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = artistTemplating(data);
             $('#artistDataContainer').html(html);
-            //$(".edit-tags-button").click(onClickEditTags);
         }
     })
 
@@ -149,7 +147,6 @@ $(document).ready(function () {
             done(getTagData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = tagTemplating(data);
             $('#tagDataContainer').html(html);
         }
@@ -180,7 +177,6 @@ $(document).ready(function () {
             done(getFriendData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = friendTemplating(data);
             $('#friendDataContainer').html(html);
 
@@ -222,7 +218,6 @@ $(document).ready(function () {
             done(getArtistRecData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = artistRecTemplating(data);
             $('#artistRecDataContainer').html(html);
             $(".edit-tags-button").click(onClickEditTags);

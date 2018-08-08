@@ -55,7 +55,6 @@ app.get('/search', function (req, res) {
     res.send(results);
   });
 
-  //res.send({resonse: "Response in this Object"});
 });
 
 app.post('/userid', function (req, res) {
@@ -63,12 +62,10 @@ app.post('/userid', function (req, res) {
   var userID = req.body.userId;
 
 
-  //console.log(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID) + qs.getRecommendedArtists(userID));
   connection.query(qs.getTaggedArtists(userID) + qs.getUserTags(userID) + qs.getFriends(userID),
     function (error, results, fields) {
       if (error) throw error;
 
-      //console.log(qs.getRecommendedArtists(userID, results[1].map(r => (r.tagValue))));
       connection.query(qs.getRecommendedArtists(userID, results[1].map(r => (r.tagValue.split("'").join("''")))),
         function (error, recs, fields) {
           if (error) throw error;
@@ -135,9 +132,6 @@ app.post('/search', function (req, res) {
           ))
         )
 
-        //let uniq = [...new Set(artists)];
-        //console.log(artists);
-        //res.send(artists);
         res.render('results', { artists: artists, songs: results });
 
       });
@@ -184,7 +178,7 @@ app.post('/search', function (req, res) {
 
         console.log(results);
 
-        res.render('results', { artists: artists }); //, songs: results });
+        res.render('results', { artists: artists });
       });
 
     // only song and tag -- no artist
@@ -228,8 +222,7 @@ app.post('/search', function (req, res) {
         )
 
         console.log(artists);
-        res.render('results', { artists: artists }); //, songs: results[1] });
-        //res.send(results);
+        res.render('results', { artists: artists });
       });
 
     // only song
@@ -238,17 +231,6 @@ app.post('/search', function (req, res) {
     connection.query(qs.querySong(songName),
       function (error, results, fields) {
         if (error) throw error;
-
-        // let artists = [];
-        // results.forEach(entry => {
-        //   artists.push({ name: entry.aname, artistID: entry.artistID, url: entry.url, tags: entry.tags })
-        // });
-
-        // artists = artists.filter((thing, index, self) =>
-        //   index === self.findIndex((t) => (
-        //     t.artistID === thing.artistID
-        //   ))
-        // )
 
         res.render('results', { songs: results });
       });

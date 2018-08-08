@@ -93,39 +93,3 @@
     justify-content: center;
     width: 100%;
 }
-
-/*
-.pages {
-    display: inline-block;
-}
-
-.pages a {
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-    transition: background-color .3s;
-    margin-top: 5em
-}
-.pages a.dots {
-    padding: 8px 5px;
-    cursor: default;
-}
-
-.pages a.active {
-    background-color: #0e57cc;
-    color: white;
-}
-
-.pages a.arrow {
-    font-weight: bolder;
-}
-
-.pages a:hover:not(.active):not(.disabled-arrow):not(.dots) {
-    background-color: #ddd;
-}
-.pages .disabled-arrow {
-    cursor: default;
-    color: lightgray !important;
-}
-*/

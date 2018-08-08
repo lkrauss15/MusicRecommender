@@ -1,12 +1,5 @@
 const queryArtistSongTag = (artistName, songName, tag) => (
-	// `SELECT s.name as sname,s.listeners, a.name as aname, a.url, a.artistID
-	// FROM music_recommender.song s, music_recommender.artist a
-	// WHERE s.createdBy = a.artistID and s.name LIKE '%${songName}%' and a.name LIKE '%${artistName}%' and a.artistID IN
-	// (SELECT a.artistID
-	// 	FROM music_recommender.artist a, music_recommender.artist_tag t
-	// 	WHERE a.artistID = t.artistID and (${genTagString(tag)}));`
-
-		`select sname, art.name as aname, art.url, art.artistID, sub.tags from artist as art join
+	`select sname, art.name as aname, art.url, art.artistID, sub.tags from artist as art join
     (
     SELECT filtered.sname, filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
     FROM (
@@ -97,19 +90,6 @@ const getFriends = (userID) => (
 );
 
 const getRecommendedArtists = (userID, tag) => (
-		//TODO idk. hard?
-    /*
-		`select a.artistID, sum(s.listeners), a.name as aname, a.url
-from music_recommender.artist a, music_recommender.song s
-where s.createdBy = a.artistID and a.artistID IN
-	(select a.artistID
-	from music_recommender.artist a, music_recommender.tagged t
-	where a.artistID = t.artistID and (${genTagString(tag)}) and t.userID = ${userID})
-Group By a.artistID, a.name
-Order By sum(s.listeners) desc
-LImit 0 , 5;` */
-
-
     `select art.name as aname, art.url, sub.tags from artist as art join
     (
     SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
@@ -134,12 +114,6 @@ LImit 0 , 5;` */
 
 
 const queryArtist = (artistName) => (
-	/*
-`SELECT s.name as sname, s.listeners, a.name as aname, a.url, a.artistID
-FROM music_recommender.song s, music_recommender.artist a
-WHERE a.name = '${artistName}' and s.createdBy = a.artistID;`
-	*/
-
 	`select art.artistID, art.name, art.url, sub.tags from artist as art join
     (
     SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags
@@ -172,11 +146,6 @@ const querySongGivenArtistAndSong = (artistName, songName) => (
 );
 
 const queryTag = (tag) => (
-	/*
-`SELECT a.name as aname, a.url
-FROM music_recommender.artist a, music_recommender.artist_tag t
-WHERE a.artistID = t.artistID and (${genTagString(tag)});`
-*/
 	`select art.name, art.url, art.artistID, sub.tags from artist as art join
     (
     SELECT filtered.artistID, GROUP_CONCAT(filtered.b ORDER BY filtered.b ASC SEPARATOR ', ') as tags

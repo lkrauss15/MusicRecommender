@@ -78,12 +78,9 @@ $(document).ready(function () {
         }
     }
 
-    //$(".edit-tags-button").click(onClickEditTags); //Needs to be called after all artists are created (page load and pagination)
-
     function artistTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructArtistHTML(item.name, item.url, item.tags);
             html += item;
         });
 
@@ -96,11 +93,6 @@ $(document).ready(function () {
 
     function getArtistData() {
         var result = [];
-
-        //result.push({name: "Michael Jackson", url: "http://www.last.fm/music/Michael+Jackson", tags: "pop, 80s, michael jackson, soul, dance, funk"});
-        //for (var i=1; i<=50; i++) {
-        //    result.push({name: "Name " + i, url: "https://www.google.com", tags: "tag" + i + ", tag" + (i+1) + ", tag" + (i+2)});
-        //}
 
         $(".artist-block").each(function (index, item) {
             result.push($(item).html());
@@ -116,7 +108,6 @@ $(document).ready(function () {
             done(getArtistData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = artistTemplating(data);
             $('#artistDataContainer').html(html);
             $(".edit-tags-button").click(onClickEditTags);
@@ -127,10 +118,6 @@ $(document).ready(function () {
     function getSongData() {
         var result = [];
 
-        //result.push({name: "Michael Jackson", url: "http://www.last.fm/music/Michael+Jackson", tags: "pop, 80s, michael jackson, soul, dance, funk"});
-        //for (var i=1; i<=50; i++) {
-        //    result.push({name: "Song Name " + i, artist: "Artist " + i, listens: i * 1000});
-        //}
         $(".song-block").each(function (index, item) {
             result.push($(item).html());
         });
@@ -141,7 +128,6 @@ $(document).ready(function () {
     function songTemplating(data) {
         var html = '';
         $.each(data, function (index, item) {
-            //html += constructSongHTML(item.name, item.artist, item.listens);
             html += item;
         });
 
@@ -158,19 +144,9 @@ $(document).ready(function () {
             done(getSongData());
         },
         callback: function (data, pagination) {
-            // template method of yourself
             var html = songTemplating(data);
             $('#songDataContainer').html(html);
         }
     })
-
-    //$('#song-pagination').twbsPagination({
-    //    totalPages: $('#songsInDOM .songItem').length,
-    //    visiblePages: 7,
-    //    onPageClick: function (event, page) {
-    //        $('#songdetails').html($('#song' + (page - 1)).html());
-    //    }
-    //});
-
 
 })

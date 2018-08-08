@@ -13,3 +13,19 @@ This should install the requisite libraries and other code required to run the a
 Once npm has installed all dependencies successfully, the application can be run via "node server.js <database_password>". 
 
 Then, simply navigate to localhost:4000 to view the application.
+
+//////////////File Documentation//////////////
+QueryStrings.js:
+    Contains functions that generate SQL Query Strings
+server.js:
+    Initializes server and connects to database.
+    Routes Traffic.
+    Processes Query Requests.
+    Processes/Formats returned tuples and sends them to Handlebars.js
+style:
+    Contains CSS files for Styling hbs files
+javascript:
+    Contains front-end javascript code (jQuery requests, ajax, organizing data)
+views:
+    Contains hbs files that Handlebars.js uses to render the HTML
+
